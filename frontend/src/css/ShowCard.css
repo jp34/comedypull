@@ -1,0 +1,16 @@
+
+.show-card {
+    padding: 1em;
+    gap: 1em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: 1px solid #888888;
+    border-radius: 8px;
+}
+
+.show-card-image {
+    width: 6em;
+    height: 6em;
+    border: 1px solid #888888;
+}

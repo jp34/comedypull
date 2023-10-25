@@ -1,0 +1,18 @@
+
+html, body {
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#root {
+    margin: 0;
+}
+
+.app {
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #efefef;
+}

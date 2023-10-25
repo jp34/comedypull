@@ -1,0 +1,15 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Nosifer&display=swap');
+
+header {
+    width: 100%;
+    padding: 0.5em 1em 0.5em 1em;
+    background-color: #bf5e32;
+}
+
+header > h1 {
+    margin: 0;
+    font-size: 30px;
+    font-family: 'Nosifer', sans-serif;
+    color: #eeeeee;
+}

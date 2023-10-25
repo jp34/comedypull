@@ -1,0 +1,10 @@
+
+.home-page {
+    height: 100%;
+}
+
+.show-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
