@@ -1,5 +1,5 @@
 import { Router, Request, Response, NextFunction } from "express";
-import { ComedianSearchParams, CreateComedianPayload } from "../domain/io";
+import { ComedianSearchParams, CreateComedianPayload } from "./entity";
 import {
     createComedian,
     deleteComedian,
@@ -11,11 +11,11 @@ import {
     updateComedianInstagram,
     updateComedianTwitter,
     updateComedianFacebook
-} from "./services/comedian";
+} from "./service";
 
 const router = Router();
 
-router.post("/api/comedians", async (request: Request, response: Response, next: NextFunction) => {
+router.post("/", async (request: Request, response: Response, next: NextFunction) => {
     try {
         const payload: CreateComedianPayload = request.body.data;
         if (!payload) throw new Error("InvalidInput!");
@@ -27,7 +27,7 @@ router.post("/api/comedians", async (request: Request, response: Response, next:
     }
 });
 
-router.get("/api/comedians", async (request: Request, response: Response, next: NextFunction) => {
+router.get("/", async (request: Request, response: Response, next: NextFunction) => {
     try {
         const search: ComedianSearchParams = request.body.data;
         const data = await findComediansBySearch(search);
@@ -38,7 +38,7 @@ router.get("/api/comedians", async (request: Request, response: Response, next: 
     }
 });
 
-router.get("/api/comedians/:id", async (request: Request, response: Response, next: NextFunction) => {
+router.get("/:id", async (request: Request, response: Response, next: NextFunction) => {
     try {
         const id: string = request.params.id;
         const data = await findComedianById(id);
@@ -49,7 +49,7 @@ router.get("/api/comedians/:id", async (request: Request, response: Response, ne
     }
 });
 
-router.put("/api/comedians/:id", async (request: Request, response: Response, next: NextFunction) => {
+router.put("/:id", async (request: Request, response: Response, next: NextFunction) => {
     try {
         const id: string = request.params.id;
         if (request.query.name) await updateComedianName(id, request.query.name.toString());
@@ -65,7 +65,7 @@ router.put("/api/comedians/:id", async (request: Request, response: Response, ne
     }
 });
 
-router.delete("/api/comedians/:id", async (request: Request, response: Response, next: NextFunction) => {
+router.delete("/:id", async (request: Request, response: Response, next: NextFunction) => {
     try {
         const id: string = request.params.id;
         await deleteComedian(id);

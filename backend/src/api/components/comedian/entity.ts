@@ -1,5 +1,21 @@
 import mongoose, { Schema } from "mongoose"
 
+export interface CreateComedianPayload {
+    name: string
+    bio?: string
+    website?: string
+    socialInstagram?: string
+    socialTwitter?: string
+    socialFacebook?: string
+}
+
+export interface ComedianSearchParams {
+    name?: string
+    socialInstagram?: string
+    socialTwitter?: string
+    socialFacebook?: string
+}
+
 export interface Comedian {
     name: string
     bio: string
@@ -7,13 +23,6 @@ export interface Comedian {
     socialInstagram: string
     socialTwitter: string
     socialFacebook: string
-}
-
-export interface Show {
-    comedianId: string
-    date: Date
-    venueName: string
-    venueAddress: string
 }
 
 const ComedianSchema = new Schema<Comedian>({
@@ -25,12 +34,4 @@ const ComedianSchema = new Schema<Comedian>({
     socialFacebook: { type: String, default: null },
 });
 
-const ShowSchema = new Schema<Show>({
-    comedianId: { type: String, required: true },
-    date: { type: Date, required: true },
-    venueName: { type: String, required: true },
-    venueAddress: { type: String, required: true }
-});
-
 export const ComedianModel = mongoose.model<Comedian>("Comedian", ComedianSchema);
-export const ShowModel = mongoose.model<Show>("Show", ShowSchema);

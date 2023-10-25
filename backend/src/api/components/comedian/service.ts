@@ -1,6 +1,5 @@
-import { Comedian, ComedianModel } from "../../domain/entity";
-import { ComedianSearchParams, CreateComedianPayload } from "../../domain/io";
-import logger from "../../config/logger";
+import { Comedian, ComedianModel, ComedianSearchParams, CreateComedianPayload } from "./entity";
+import logger from "../../../config/logger";
 
 export const createComedian = async (payload: CreateComedianPayload): Promise<Comedian> => {
     const comedian = await ComedianModel.create({
