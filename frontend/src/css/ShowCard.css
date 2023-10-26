@@ -1,16 +1,49 @@
 
 .show-card {
-    padding: 1em;
+    padding: 1em 1em 1em 1em;
+    width: 25em;
     gap: 1em;
     display: flex;
     flex-direction: row;
-    align-items: center;
-    border: 1px solid #888888;
-    border-radius: 8px;
+    /* align-items: center; */
+    border: 1px solid #aeaeae;
+    border-radius: 6px;
+    background-color: #eaeaea;
 }
 
 .show-card-image {
     width: 6em;
     height: 6em;
-    border: 1px solid #888888;
+    border: 1px solid #aeaeae;
+    border-radius: 3px;
+    background-color: #eeeeee;
+}
+
+.show-card-details {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.show-card-details-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2em;
+}
+
+.show-card-comedian {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.show-card-venue {
+    margin: 0;
+    font-size: 14px;
+}
+
+.show-card-date {
+    margin: 0;
+    font-size: 14px;
 }

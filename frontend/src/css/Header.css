@@ -4,6 +4,10 @@
 header {
     width: 100%;
     padding: 0.5em 1em 0.5em 1em;
+    gap: 2em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     background-color: #bf5e32;
 }
 
@@ -12,4 +16,19 @@ header > h1 {
     font-size: 30px;
     font-family: 'Nosifer', sans-serif;
     color: #eeeeee;
+}
+
+::placeholder {
+    color: #eeeeee;
+}
+
+.search-bar {
+    padding: 0 0.5em 0 0.5em;
+    height: 2.2em;
+    width: 20em;
+    border: 1px solid #aeaeae;
+    border-radius: 4px;
+    font-size: 15px;
+    color: #eeeeee;
+    background-color: transparent;
 }

@@ -1,12 +1,14 @@
-import ContentWrapper from "../components/ContentWrapper";
 import ShowCard from "../components/ShowCard";
 import "../css/Home.css";
-import { shows } from "../data";
+import { ShowStore } from "../store";
 
 const Home = () => {
+
+    const shows = ShowStore.getState().shows;
+
     return (
-        <div className="home-page">
-            <ContentWrapper>
+        <div className="page">
+            <div className="wrapper">
                 <div className="show-list">
                     {shows.map((show) => {
                         return <ShowCard
@@ -17,10 +19,10 @@ const Home = () => {
                         />
                     })}
                 </div>
-                <div className="show-filters">
-                    
+                <div className="show-list-filters">
+                    <h1></h1>
                 </div>
-            </ContentWrapper>
+            </div>
         </div>
     );
 }
