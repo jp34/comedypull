@@ -74,6 +74,27 @@ export const ShowStore = create((set, get) => ({
             venueName: "The Palace Theater",
             venueAddress: "123 North Main Street"
         },
+        {
+            id: 4,
+            comedianId: 1,
+            date: "2023-10-25T18:00:00Z",
+            venueName: "The Palace Theater",
+            venueAddress: "123 North Main Street"
+        },
+        {
+            id: 5,
+            comedianId: 2,
+            date: "2023-10-26T18:00:00Z",
+            venueName: "The Palace Theater",
+            venueAddress: "123 North Main Street"
+        },
+        {
+            id: 6,
+            comedianId: 3,
+            date: "2023-10-27T18:00:00Z",
+            venueName: "The Palace Theater",
+            venueAddress: "123 North Main Street"
+        },
     ],
     actions: {
 
