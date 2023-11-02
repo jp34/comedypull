@@ -1,0 +1,70 @@
+{
+    "comedians": [
+        {
+            "name": "Joe Rogan",
+            "website": "www.joerogan.com",
+            "socialInstagram": "@joerogan",
+            "socialTwitter": "@joerogan"
+        },
+        {
+            "name": "Stavros Halkias",
+            "website": "www.stavvy.biz",
+            "socialInstagram": "@stavvybaby2",
+            "socialTwitter": "@stavvybaby"
+        },
+        {
+            "name": "Dave Chappelle",
+            "website": "www.davechappelletour2023.com",
+            "socialInstagram": "@davechappelle",
+            "socialTwitter": "@davechappelle"
+        },
+        {
+            "name": "Shane Gillis",
+            "website": "www.shanemgillis.com",
+            "socialInstagram": "@shanemgillis",
+            "socialTwitter": "@shanemgillis"
+        },
+        {
+            "name": "Ari Shaffir",
+            "website": "www.arishaffir.com",
+            "socialInstagram": "@arishaffir",
+            "socialTwitter": ""
+        },
+        {
+            "name": "Sam Morril",
+            "website": "www.sammorril.com",
+            "socialInstagram": "@sammorril",
+            "socialTwitter": "@sammorril"
+        },
+        {
+            "name": "Joe List",
+            "website": "www.comedianjoelist.com",
+            "socialInstagram": "@joelistcomedy",
+            "socialTwitter": "@joelistcomedy"
+        },
+        {
+            "name": "Tony Hinchcliffe",
+            "website": "www.tonyhinchcliffe.com",
+            "socialInstagram": "@tonyhinchcliffe",
+            "socialTwitter": "@tonyhinchcliffe"
+        },
+        {
+            "name": "Andrew Santino",
+            "website": "www.andrewsantino.com",
+            "socialInstagram": "@cheetosantino",
+            "socialTwitter": "@cheetosantino"
+        },
+        {
+            "name": "Bobby Lee",
+            "website": "www.bobbyleelive.com",
+            "socialInstagram": "@bobbyleelive",
+            "socialTwitter": "@bobbyleelive"
+        },
+        {
+            "name": "John Mulaney",
+            "website": "www.johnmulaney.com",
+            "socialInstagram": "@johnmulaney",
+            "socialTwitter": "@mulaney"
+        }
+    ]
+}
