@@ -1,0 +1,92 @@
+{
+    "comedians": [
+        {
+            "name": "Joe Rogan",
+            "website": "www.joerogan.com",
+            "websiteEventPage": "",
+            "socialInstagram": "@joerogan",
+            "socialTwitter": "@joerogan",
+            "profilePic": "joe_rogan.jpg"
+        },
+        {
+            "name": "Stavros Halkias",
+            "website": "www.stavvy.biz",
+            "websiteEventPage": "www.stavvy.biz",
+            "socialInstagram": "@stavvybaby2",
+            "socialTwitter": "@stavvybaby",
+            "profilePic": "stavros_halkias.jpg"
+        },
+        {
+            "name": "Dave Chappelle",
+            "website": "www.shopchappelle.com",
+            "websiteEventPage": "",
+            "socialInstagram": "@davechappelle",
+            "socialTwitter": "@davechappelle",
+            "profilePic": "dave_chappelle.avif"
+        },
+        {
+            "name": "Shane Gillis",
+            "website": "www.shanemgillis.com",
+            "websiteEventPage": "www.shanemgillis.com",
+            "socialInstagram": "@shanemgillis",
+            "socialTwitter": "@shanemgillis",
+            "profilePic": "shane_gillis.jpg"
+        },
+        {
+            "name": "Ari Shaffir",
+            "website": "www.arishaffir.com",
+            "websiteEventPage": "www.arishaffir.com/tour",
+            "socialInstagram": "@arishaffir",
+            "socialTwitter": "",
+            "profilePic": "ari_shaffir.jpg"
+        },
+        {
+            "name": "Sam Morril",
+            "website": "www.sammorril.com",
+            "websiteEventPage": "www.sammorril.com/shows",
+            "socialInstagram": "@sammorril",
+            "socialTwitter": "@sammorril",
+            "profilePic": "sam_morril.png"
+        },
+        {
+            "name": "Joe List",
+            "website": "www.comedianjoelist.com",
+            "websiteEventPage": "www.comedianjoelist.com",
+            "socialInstagram": "@joelistcomedy",
+            "socialTwitter": "@joelistcomedy",
+            "profilePic": "joe_list.jpg"
+        },
+        {
+            "name": "Tony Hinchcliffe",
+            "website": "www.tonyhinchcliffe.com",
+            "websiteEventPage": "www.tonyhinchcliffe.com",
+            "socialInstagram": "@tonyhinchcliffe",
+            "socialTwitter": "@tonyhinchcliffe",
+            "profilePic": "tony_hinchcliffe.jpg"
+        },
+        {
+            "name": "Andrew Santino",
+            "website": "www.andrewsantino.com",
+            "websiteEventPage": "www.andrewsantino.com",
+            "socialInstagram": "@cheetosantino",
+            "socialTwitter": "@cheetosantino",
+            "profilePic": "andrew_santino.jpg"
+        },
+        {
+            "name": "Bobby Lee",
+            "website": "www.bobbyleelive.com",
+            "websiteEventPage": "www.bobbylee.live/tour",
+            "socialInstagram": "@bobbyleelive",
+            "socialTwitter": "@bobbyleelive",
+            "profilePic": "bobby_lee.jpg"
+        },
+        {
+            "name": "John Mulaney",
+            "website": "www.johnmulaney.com",
+            "websiteEventPage": "www.johnmulaney.com",
+            "socialInstagram": "@johnmulaney",
+            "socialTwitter": "@mulaney",
+            "profilePic": "john_mulaney.jpg"
+        }
+    ]
+}
