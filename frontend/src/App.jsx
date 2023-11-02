@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./css/App.css";
-import Layout from "./components/Layout";
+import Wrapper from "./components/Wrapper";
 import Home from "./pages/Home";
 
 const App = () => {
@@ -8,7 +8,7 @@ const App = () => {
     <div className="app">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Layout />}>
+          <Route path="/" element={<Wrapper />}>
             <Route index element={<Home />}/>
           </Route>
         </Routes>

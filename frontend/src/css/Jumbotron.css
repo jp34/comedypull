@@ -1,0 +1,15 @@
+
+.jumbotron {
+    height: 71vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000000;
+}
+
+.jumbotron-text {
+    font-family: 'Anton', sans-serif;
+    font-size: 60px;
+    color: #fff;
+    margin: 0;
+}

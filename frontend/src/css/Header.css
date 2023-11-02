@@ -1,23 +1,38 @@
 
+/* Header */
+
 header {
-    width: 100%;
-    padding: 0.5em 1em 0.5em 1em;
+    position: sticky;
+    max-width: 100%;
+    top: 0;
+    padding: 0.5em 2em 0.5em 2em;
     gap: 2em;
+    /* height: 60px; */
+    max-height: 60px;
     display: flex;
     flex-direction: row;
     align-items: center;
-    background-color: #bf5e32;
+    background-color: #fff;
+    border-bottom: 1px solid #d1d1d1;
 }
 
-header > h1 {
+/* Banner */
+
+.banner-container {
+    flex: 1;
+}
+
+.banner > h1 {
     margin: 0;
     font-size: 30px;
     font-family: 'Nosifer', sans-serif;
-    color: #eeeeee;
+    color: #1c1c1c;
 }
 
-::placeholder {
-    color: #eeeeee;
+/* Search */
+
+.search-container {
+    flex: 3;
 }
 
 .search-bar {
@@ -29,4 +44,45 @@ header > h1 {
     font-size: 15px;
     color: #eeeeee;
     background-color: transparent;
+}
+
+::placeholder {
+    color: #eeeeee;
+}
+
+/* Logins */
+
+.logins-container {
+    display: flex;
+    flex: 1;
+    gap: 1em;
+    justify-content: flex-end;
+}
+
+.logins-container > button {
+    cursor: pointer;
+    border: transparent;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    border-radius: 10px;
+}
+
+#login {
+    background-color: transparent;
+}
+
+#login:hover {
+    color: #5c5c5c;
+}
+
+#register {
+    padding: 0.4em 1.6em 0.4em 1.6em;
+    color: #ffffff;
+    background-color: #1c1c1c;
+}
+
+#register:hover {
+    color: #eeeeee;
+    background-color: #3c3c3c;
 }

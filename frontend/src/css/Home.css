@@ -1,24 +1,8 @@
 
-.page {
-    height: 100%;
-}
-
-.wrapper {
-    margin: 4em 10em 0 10em;
-}
-
 .shows {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     gap: 2em;
     justify-content: center;
-}
-
-.show-list-filters {
-    width: 10em;
-    height: auto;
-    border: 1px solid #aeaeae;
-    border-radius: 6px;
-    background-color: #eaeaea;
 }

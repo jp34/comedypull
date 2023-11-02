@@ -6,18 +6,25 @@ const SearchBar = () => {
     );
 }
 
-const Logins = () => {
-    return (
-        <button />
-    );
-}
-
 const Header = () => {
     return (
         <header>
-            <h1>ComedyPull</h1>
-            <SearchBar />
-            <Logins />
+            <div className="banner-container">
+                <div className="banner">
+                    <h1>ComedyPull</h1>
+                </div>
+            </div>
+            <div className="search-container">
+                <SearchBar />
+            </div>
+            <div className="logins-container">
+                <button id="register">
+                    Sign Up
+                </button>
+                <button id="login" type="button">
+                    Log In
+                </button>
+            </div>
         </header>
     );
 }
