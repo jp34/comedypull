@@ -19,6 +19,7 @@ header {
 /* Banner */
 
 .banner-container {
+    display: flex;
     flex: 1;
 }
 
@@ -32,22 +33,48 @@ header {
 /* Search */
 
 .search-container {
-    flex: 3;
+    display: flex;
+    flex: 2;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+}
+
+#location-selector {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 0.5em 0 0.5em;
+    height: 2.8em;
+    border-radius: 8px;
+    border: 1px solid #eaeaea;
+    background-color: #fafafa;
+}
+
+#location-selector > p {
+    margin: 0;
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #3c3c3c;
 }
 
 .search-bar {
     padding: 0 0.5em 0 0.5em;
-    height: 2.2em;
-    width: 20em;
-    border: 1px solid #aeaeae;
-    border-radius: 4px;
+    height: 2.9em;
+    max-width: 30em;
+    width: 100%;
+    min-width: 15em;
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
     font-size: 15px;
-    color: #eeeeee;
-    background-color: transparent;
+    color: #000000;
+    background-color: #fafafa;
+    font-family: 'Inter', sans-serif;
 }
 
 ::placeholder {
-    color: #eeeeee;
+    color: #000000;
 }
 
 /* Logins */
@@ -60,6 +87,7 @@ header {
 }
 
 .logins-container > button {
+    
     cursor: pointer;
     border: transparent;
     font-family: 'Poppins', sans-serif;
@@ -69,6 +97,7 @@ header {
 }
 
 #login {
+    min-width: 70px;
     background-color: transparent;
 }
 
@@ -77,6 +106,7 @@ header {
 }
 
 #register {
+    min-width: 100px;
     padding: 0.4em 1.6em 0.4em 1.6em;
     color: #ffffff;
     background-color: #1c1c1c;

@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
+import Footer from "./Footer";
 import "../css/Wrapper.css";
 
 const Wrapper = () => {
@@ -9,6 +10,7 @@ const Wrapper = () => {
             <div className="content-wrapper">
                 <Outlet />
             </div>
+            <Footer />
         </div>
     );
 }

@@ -1,12 +1,22 @@
+import { useState } from "react";
 import "../css/Header.css";
 
-const SearchBar = () => {
-    return (
-        <input id="search-bar-input" className="search-bar" type="text" placeholder="Search" />
-    );
-}
-
 const Header = () => {
+
+    const renderLocationSelector = () => {
+        return (
+            <div id="location-selector">
+                <p>Columbus, OH</p>
+            </div>
+        );
+    }
+
+    const renderSearchBar = () => {
+        return (
+            <input id="search-bar-input" className="search-bar" type="text" placeholder="Search" />
+        );
+    }
+
     return (
         <header>
             <div className="banner-container">
@@ -15,7 +25,8 @@ const Header = () => {
                 </div>
             </div>
             <div className="search-container">
-                <SearchBar />
+                {renderLocationSelector()}
+                {renderSearchBar()}
             </div>
             <div className="logins-container">
                 <button id="register">

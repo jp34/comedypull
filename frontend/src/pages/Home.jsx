@@ -3,6 +3,7 @@ import { ShowStore } from "../store";
 import Jumbotron from "../components/Jumbotron";
 import ShowCard from "../components/ShowCard";
 import ComedianReel from "../components/ComedianReel";
+import ShowGallery from "../components/ShowGallery";
 
 const Home = () => {
 
@@ -10,14 +11,14 @@ const Home = () => {
 
     const renderShows = () => {
         return (
-            <div className="shows">
+            <ShowGallery>
                 {shows.map((show) => {
                     return <ShowCard
                         key={show.id}
                         show={show}
                     />
                 })}
-            </div>
+            </ShowGallery>
         );
     }
 
