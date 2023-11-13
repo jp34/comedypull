@@ -1,12 +1,5 @@
 import mongoose, { Schema } from "mongoose";
 
-export interface ShowSearchParams {
-    actId?: string
-    dateFrom?: Date
-    dateUntil?: Date
-    venueName?: string
-}
-
 export interface Show {
     actId: string
     date: Date
