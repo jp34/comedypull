@@ -3,11 +3,11 @@ import mongoose, { Schema } from "mongoose"
 export interface Act {
     ticketmasterId: string
     name: string
-    bio: string
-    website: string
-    socialInstagram: string
-    socialTwitter: string
-    socialFacebook: string
+    bio?: string
+    website?: string
+    socialInstagram?: string
+    socialTwitter?: string
+    socialFacebook?: string
     dateCreated: Date
     dateModified: Date
 }
