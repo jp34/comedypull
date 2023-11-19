@@ -1,6 +1,6 @@
 
 export enum ProcessStatus {
-    STARTED,
-    FAILED,
-    COMPLETED,
+    STARTED = "STARTED",
+    FAILED = "FAILED",
+    COMPLETED = "COMPLETED",
 }

@@ -1,27 +1,38 @@
 import mongoose, { Schema } from "mongoose"
 
+export interface TMAct {
+    id: string
+    name: string
+    url: string
+    locale: string
+}
+
 export interface Act {
-    ticketmasterId: string
+    tm_id: string
+    tm_url: string
     name: string
     bio?: string
     website?: string
-    socialInstagram?: string
-    socialTwitter?: string
-    socialFacebook?: string
-    dateCreated: Date
-    dateModified: Date
+    social_instagram?: string
+    social_twitter?: string
+    social_facebook?: string
+    locale: string
+    date_created: Date
+    date_updated: Date
 }
 
 const ActSchema = new Schema<Act>({
-    ticketmasterId: { type: String, required: true },
-    name: { type: String, required: true },
-    bio: { type: String, default: null },
-    website: { type: String, default: null },
-    socialInstagram: { type: String, default: null },
-    socialTwitter: { type: String, default: null },
-    socialFacebook: { type: String, default: null },
-    dateCreated: { type: Date, default: Date.now() },
-    dateModified: { type: Date, default: Date.now() }
+    tm_id: { type: String, unique: true, required: true },
+    tm_url: { type: String, unique: true, required: true },
+    name: { type: String, unique: true, required: true},
+    bio: { type: String },
+    website: { type: String, unique: true, sparse: true },
+    social_instagram: { type: String, unique: true, sparse: true },
+    social_twitter: { type: String, unique: true, sparse: true },
+    social_facebook: { type: String, unique: true, sparse: true },
+    locale: { type: String, required: true},
+    date_created: { type: Date, default: Date.now() },
+    date_updated: { type: Date, default: Date.now() }
 });
 
 export const ActModel = mongoose.model<Act>("Act", ActSchema);
