@@ -12,6 +12,11 @@ const DB_STRING = process.env.ENGINE_DB_STRING ?? "undefined";
 if (DB_STRING === "undefined") throw new Error("Missing environment variable: ENGINE_DB_STRING");
 logger.debug(`DB_STRING: ${DB_STRING}`);
 
+// ENGINE_API_URL : TicketMaster api url
+const API_URL = process.env.ENGINE_API_URL ?? "undefined";
+if (API_URL === "undefined") throw new Error("Missing environment variable: ENGINE_API_URL");
+logger.debug(`API_URL: ${API_URL}`);
+
 // ENGINE_API_KEY : TicketMaster api key
 const API_KEY = process.env.ENGINE_API_KEY ?? "undefined";
 if (API_KEY === "undefined") throw new Error("Missing environment variable: ENGINE_API_KEY");
@@ -24,8 +29,9 @@ logger.debug(`ACT_COUNT_CUTOFF: ${ACT_COUNT_CUTOFF}`);
 
 const Env = {
     DEBUG,
-    API_KEY,
     DB_STRING,
+    API_URL,
+    API_KEY,
     ACT_COUNT_CUTOFF: parseInt(ACT_COUNT_CUTOFF)
 };
 
