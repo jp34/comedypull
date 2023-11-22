@@ -1,5 +1,6 @@
 import { v4 } from "uuid";
-import { Act, ActModel, Image, TMAct } from "../models/act";
+import { Act, ActModel } from "../models/act";
+import { TMAttraction } from "../models/tm";
 import { ProcessStatus } from "../models/process";
 import { fetchActs } from "../api/ticketmaster.api";
 import logger from "../config/logger";
@@ -26,10 +27,10 @@ export const updateActs = async (): Promise<void> => {
 
     await mongoose.connect(Env.DB_STRING).then(async () => {
         // Request the top acts from Ticketmaster
-        await fetchActs(Env.ACT_COUNT_CUTOFF, 0).then(async (acts: TMAct[]) => {
+        await fetchActs(Env.ACT_COUNT_CUTOFF, 0).then(async (acts: TMAttraction[]) => {
             if (acts.length == 0) throw new Error("Failed to update acts: No acts to insert");
             // Create or update every act returned from Ticketmaster
-            acts.forEach(async (a: TMAct) => {
+            acts.forEach(async (a: TMAttraction) => {
                 let act = await ActModel.findOne({ tm_id: a.id }).select('-__v');
                 if (act == null) await createFromTMAct(a);
                 logger.info('Updated act', {

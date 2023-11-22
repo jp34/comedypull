@@ -1,10 +1,13 @@
 import Env from "../config/env";
 import axios, { AxiosResponse } from "axios";
-import { Image, TMAct } from "../models/act";
+import axiosRateLimit from "axios-rate-limit";
+import { TMAttraction, TMEvent } from "../models/tm";
+import { Image } from "../models/act";
 import logger from "../config/logger";
 
+const client = axiosRateLimit(axios.create(), { maxRPS: 5 });
 const ACT_SEARCH_PARAMS = new URLSearchParams({
-    apikey: Env.API_KEY,
+    apikey: Env.TM_API_KEY,
     locale: "en-us,en",
     sort: "relevance,desc",
     subGenreId: "KZazBEonSMnZfZ7vF17"
@@ -12,12 +15,12 @@ const ACT_SEARCH_PARAMS = new URLSearchParams({
 
 /**
  * This function takes an attraction object from a Ticketmaster response and returns
- * an object of type TMAct which contains the relevant information.
+ * an object of type TMAttraction which contains the relevant information.
  * 
  * @param a Object with attraction data from Ticketmaster
- * @returns Object of type TMAct
+ * @returns Object of type TMAttraction
  */
-const extractTMActFromResponse = (a: any): TMAct => {
+const extractTMActFromResponse = (a: any): TMAttraction => {
     // If the object contains images, extract them as well
     let images: Image[] = [];
     if (a.images != null) {
@@ -45,12 +48,12 @@ const extractTMActFromResponse = (a: any): TMAct => {
  * @param page Page offset number
  * @returns Array of acts with type TMAct
  */
-export const fetchActs = async (size: number = Env.ACT_COUNT_CUTOFF, page: number = 0): Promise<TMAct[]> => {
+export const fetchActs = async (size: number = Env.ACT_COUNT_CUTOFF, page: number = 0): Promise<TMAttraction[]> => {
     // Build a url for the /attractions endpoint of Ticketmasters API
-    let url = `${Env.API_URL}?${ACT_SEARCH_PARAMS.toString()}&size=${size}&page=${page}`;
-    let acts: TMAct[] = [];
+    let url = `${Env.TM_ATTRACTIONS_URL}?${ACT_SEARCH_PARAMS.toString()}&size=${size}&page=${page}`;
+    let acts: TMAttraction[] = [];
     // Request the top acts from ticketmaster
-    await axios.get(url).then((response: AxiosResponse) => {
+    await client.get(url).then((response: AxiosResponse) => {
         if (response.status != 200) throw new Error(`Request failed with code ${response.status}`);
 
         // Parse response into objects of type TMAct

@@ -7,14 +7,6 @@ export interface Image {
     height: number
 }
 
-export interface TMAct {
-    id: string
-    name: string
-    url: string
-    locale: string
-    images: Image[]
-}
-
 export interface Act {
     tm_id: string
     tm_url: string
