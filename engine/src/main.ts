@@ -1,5 +1,5 @@
 import logger from "./config/logger";
-import { updateActs } from "./process/update.process";
+import { updateActs } from "./services/update.service";
 
 const main = async () => {
     try {
