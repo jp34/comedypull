@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { ConfigurationError } from "../../entity/error";
+import { ConfigurationError } from "../../models/error";
 import logger from "../../config/logger";
 
 export const errorHandler = async (error: Error, request: Request, response: Response, next: NextFunction) => {
