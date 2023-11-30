@@ -1,42 +1,43 @@
+import Env from "../../../config/env";
+import { Act, ActModel, TMAttraction, ProcessStatus, InvalidInputError } from "../models";
+import { fetchAttractions } from "./ticketmaster.service";
+import { createFromTMAttraction } from "./act.service";
+import logger from "../../../config/logger";
 import { v4 } from "uuid";
-import { Act, ActModel } from "../models/act";
-import { TMAttraction } from "../models/tm";
-import { ProcessStatus } from "../models/process";
-import { fetchActs } from "../api/ticketmaster.api";
-import logger from "../config/logger";
 import mongoose from "mongoose";
-import Env from "../config/env";
-import { createFromTMAct } from "./act.service";
+
+export const start = async (): Promise<void> => {
+    let processId: string = v4();
+    logger.info("Updating database", {
+        processId,
+        timestamp: new Date(Date.now()).toISOString()
+    });
+    await updateActs(processId);
+    await updateShows(processId);
+}
 
 /**
  * This function defines an algorithm that will update MongoDB with the top (N) acts
  * from Ticketmaster (Where N is defined by the ACT_COUNT_CUTOFF environment variable).
  */
-export const updateActs = async (): Promise<void> => {
-    const processId = v4();
-    const processName = "updateActs";
-    let processStatus = ProcessStatus.STARTED;
-    logger.info('Updating acts', {
+export const updateActs = async (processId: string): Promise<void> => {
+    logger.info("Process Started", {
         processId,
-        processName,
-        processStatus,
+        processName: "updateActs",
         timestamp: new Date(Date.now()).toISOString()
     });
 
     let updateCount: number = 0;
-
     await mongoose.connect(Env.DB_STRING).then(async () => {
-        // Request the top acts from Ticketmaster
-        await fetchActs(Env.ACT_COUNT_CUTOFF, 0).then(async (acts: TMAttraction[]) => {
+        // Request the top 100 attractions from Ticketmaster
+        await fetchAttractions(100, 0).then(async (acts: TMAttraction[]) => {
             if (acts.length == 0) throw new Error("Failed to update acts: No acts to insert");
             // Create or update every act returned from Ticketmaster
             acts.forEach(async (a: TMAttraction) => {
                 let act = await ActModel.findOne({ tm_id: a.id }).select('-__v');
-                if (act == null) await createFromTMAct(a);
+                if (act == null) await createFromTMAttraction(a);
                 logger.info('Updated act', {
                     processId,
-                    processName,
-                    processStatus,
                     resource: `act:${a.id}`,
                     timestamp: new Date(Date.now()).toISOString()
                 });
@@ -45,11 +46,9 @@ export const updateActs = async (): Promise<void> => {
                 updateCount++;
                 if (updateCount == acts.length) {
                     mongoose.connection.close();
-                    processStatus = ProcessStatus.COMPLETED;
-                    logger.info('Finished updating acts', {
+                    logger.info('Process Completed', {
                         processId,
-                        processName,
-                        processStatus,
+                        processName: "updateActs",
                         timestamp: new Date(Date.now()).toISOString()
                     });
                 }
@@ -58,19 +57,15 @@ export const updateActs = async (): Promise<void> => {
     });
 }
 
-export const updateShows = async (): Promise<void> => {
-    const processId = v4();
-    const processName = "updateShows";
-    let processStatus = ProcessStatus.STARTED;
-    logger.info('Updating shows', {
+export const updateShows = async (processId: string): Promise<void> => {
+    logger.info("Process Started", {
         processId,
-        processName,
-        processStatus,
+        processName: "updateShows",
         timestamp: new Date(Date.now()).toISOString()
     });
 
     await mongoose.connect(Env.DB_STRING).then(async () => {
-        const acts: Act[] = await ActModel.find();
+        const acts: Act[] = await ActModel.find().lean().select("-__v");
         if (acts.length == 0) throw new Error("Failed to update shows: No shows to insert");
     });
 }

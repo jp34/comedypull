@@ -1,7 +1,7 @@
-import logger from "../config/logger";
-import { ActModel, TMAct } from "../models/act"
+import { Act, ActModel, TMAttraction } from "../models";
+import logger from "../../../config/logger";
 
-export const createFromTMAct = async (a: TMAct): Promise<void> => {
+export const createFromTMAttraction = async (a: TMAttraction): Promise<void> => {
     const exists = await ActModel.exists({ tm_id: a.id }).lean().select('-__v');
     if (exists != null) return;
     await ActModel.create({
@@ -19,4 +19,12 @@ export const createFromTMAct = async (a: TMAct): Promise<void> => {
             timestamp: new Date(Date.now()).toISOString()
         });
     });
+}
+
+export const findActs = async (): Promise<Act[]> => {
+    return await ActModel.find().lean().select("-__v");
+}
+
+export const findActById = async (id: string): Promise<Act> => {
+    return await ActModel.findById(id).lean().select("-__v");
 }

@@ -1,4 +1,4 @@
-import { Image } from "./act";
+import { Image } from "./image.model";
 
 export interface TMAttraction {
     id: string
@@ -9,5 +9,9 @@ export interface TMAttraction {
 }
 
 export interface TMEvent {
-
+    id: string
+    name: string
+    url: string
+    locale: string
+    images: Image[]
 }

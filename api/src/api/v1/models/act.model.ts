@@ -1,11 +1,5 @@
-import mongoose, { Schema } from "mongoose"
-
-export interface Image {
-    ratio: string
-    url: string
-    width: number
-    height: number
-}
+import mongoose, { Schema } from "mongoose";
+import { Image } from "./image.model";
 
 export interface Act {
     tm_id: string
