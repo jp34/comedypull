@@ -1,10 +1,10 @@
-import Env from "../../../config/env";
-import { Act, ActModel, TMAttraction, ProcessStatus, InvalidInputError } from "../models";
-import { fetchAttractions } from "./ticketmaster.service";
-import { createFromTMAttraction } from "./act.service";
-import logger from "../../../config/logger";
-import { v4 } from "uuid";
 import mongoose from "mongoose";
+import { v4 } from "uuid";
+import Env from "../../config/env";
+import logger from "../../config/logger";
+import { Act, ActModel, Show, ShowModel, TMAttraction, TMEvent } from "../models";
+import { fetchAttractions, fetchEventsById } from "./tm.service";
+import { createFromTMAttraction } from "./act.service";
 
 export const start = async (): Promise<void> => {
     let processId: string = v4();
@@ -64,8 +64,23 @@ export const updateShows = async (processId: string): Promise<void> => {
         timestamp: new Date(Date.now()).toISOString()
     });
 
+    let updateCount: number = 0;
     await mongoose.connect(Env.DB_STRING).then(async () => {
         const acts: Act[] = await ActModel.find().lean().select("-__v");
         if (acts.length == 0) throw new Error("Failed to update shows: No shows to insert");
+
+        acts.forEach(async (a: Act) => {
+            const events: TMEvent[] = await fetchEventsById(a.tm_id);
+
+            updateCount++;
+            if (updateCount == acts.length) {
+                mongoose.connection.close();
+                logger.info('Process Completed', {
+                    processId,
+                    processName: "updateShows",
+                    timestamp: new Date(Date.now()).toISOString()
+                });
+            }
+        });
     });
 }

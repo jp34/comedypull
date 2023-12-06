@@ -1,1 +1,1 @@
-export * as UpdateService from "./update.service";
+export * from "./act.service";
