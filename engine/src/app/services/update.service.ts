@@ -6,7 +6,7 @@ import { Act, ActModel, Show, ShowModel, TMAttraction, TMEvent } from "../models
 import { fetchAttractions, fetchEventsById } from "./tm.service";
 import { createFromTMAttraction } from "./act.service";
 
-export const start = async (): Promise<void> => {
+export const startUpdateProcess = async (): Promise<void> => {
     let processId: string = v4();
     logger.info("Updating database", {
         processId,
@@ -21,12 +21,6 @@ export const start = async (): Promise<void> => {
  * from Ticketmaster (Where N is defined by the ACT_COUNT_CUTOFF environment variable).
  */
 export const updateActs = async (processId: string): Promise<void> => {
-    logger.info("Process Started", {
-        processId,
-        processName: "updateActs",
-        timestamp: new Date(Date.now()).toISOString()
-    });
-
     let updateCount: number = 0;
     await mongoose.connect(Env.DB_STRING).then(async () => {
         // Request the top 100 attractions from Ticketmaster
@@ -36,34 +30,16 @@ export const updateActs = async (processId: string): Promise<void> => {
             acts.forEach(async (a: TMAttraction) => {
                 let act = await ActModel.findOne({ tm_id: a.id }).select('-__v');
                 if (act == null) await createFromTMAttraction(a);
-                logger.info('Updated act', {
-                    processId,
-                    resource: `act:${a.id}`,
-                    timestamp: new Date(Date.now()).toISOString()
-                });
 
                 // When updates are complete, close the connection
                 updateCount++;
-                if (updateCount == acts.length) {
-                    mongoose.connection.close();
-                    logger.info('Process Completed', {
-                        processId,
-                        processName: "updateActs",
-                        timestamp: new Date(Date.now()).toISOString()
-                    });
-                }
+                if (updateCount == acts.length) mongoose.connection.close();
             });
         });
     });
 }
 
 export const updateShows = async (processId: string): Promise<void> => {
-    logger.info("Process Started", {
-        processId,
-        processName: "updateShows",
-        timestamp: new Date(Date.now()).toISOString()
-    });
-
     let updateCount: number = 0;
     await mongoose.connect(Env.DB_STRING).then(async () => {
         const acts: Act[] = await ActModel.find().lean().select("-__v");
@@ -73,14 +49,7 @@ export const updateShows = async (processId: string): Promise<void> => {
             const events: TMEvent[] = await fetchEventsById(a.tm_id);
 
             updateCount++;
-            if (updateCount == acts.length) {
-                mongoose.connection.close();
-                logger.info('Process Completed', {
-                    processId,
-                    processName: "updateShows",
-                    timestamp: new Date(Date.now()).toISOString()
-                });
-            }
+            if (updateCount == acts.length) mongoose.connection.close();
         });
     });
 }
