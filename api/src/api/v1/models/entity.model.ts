@@ -1,7 +1,5 @@
 import mongoose, { Schema } from "mongoose";
 
-// -- Define embedded document models
-
 export interface Image {
     ratio: string;
     url: string;
@@ -9,25 +7,105 @@ export interface Image {
     height: number;
 }
 
+export interface Address {
+    address: string;
+    city: string;
+    post_code: string;
+    state: {
+        name: string;
+        code: string;
+    }
+    country: {
+        name: string;
+        code: string;
+    }
+}
+
+export interface Geo {
+    latitude: number;
+    longitude: number;
+}
+
+
+// -- Venue Model - Defines a single venue hosting a comedy event
+
 export interface Venue {
     tm_id: string;
     tm_url: string;
     name: string;
+    geo: Geo;
+    address: Address;
     locale: string;
-    address: string;
-    city: string;
-    state: string;
-    post_code: string;
-    country: string;
-    country_code: string;
+    date_created: Date;
+    date_updated: Date;
 }
 
-// -- Define core models
+const VenueSchema = new Schema<Venue>({
+    tm_id: { type: String, unique: true, required: true },
+    tm_url: { type: String, unique: true, required: true },
+    name: { type: String, required: true },
+    geo: {
+        latitude: { type: String, required: true },
+        longitude: { type: String, required: true }
+    },
+    address: {
+        address: { type: String, required: true },
+        city: { type: String, required: true },
+        post_code: { type: String, required: true },
+        state: {
+            name: { type: String },
+            code: { type: String }
+        },
+        country: {
+            name: { type: String },
+            code: { type: String }
+        }
+    },
+    locale: { type: String, required: true },
+    date_created: { type: Date, default: Date.now() },
+    date_updated: { type: Date, default: Date.now() }
+});
+
+export const VenueModel = mongoose.model<Venue>("Venue", VenueSchema);
+
+
+// -- Show Model - Defines a single comedy event
+
+export interface Show {
+    tm_id: string;
+    tm_url: string;
+    act_id: string;
+    venue_id: string;
+    name: string;
+    timezone: string;
+    locale: string;
+    date_start: Date;
+    date_created: Date;
+    date_updated: Date;
+}
+
+const ShowSchema = new Schema<Show>({
+    tm_id: { type: String, unique: true, required: true },
+    tm_url: { type: String, unique: true, required: true },
+    act_id: { type: String, required: true },
+    venue_id: { type: String, required: true },
+    name: { type: String, required: true },
+    timezone: { type: String, required: true },
+    locale: { type: String, required: true },
+    date_start: { type: Date, required: true },
+    date_created: { type: Date, default: Date.now() },
+    date_updated: { type: Date, default: Date.now() }
+});
+
+export const ShowModel = mongoose.model<Show>("Show", ShowSchema);
+
+
+// -- Act Model - Defines a single comedian
 
 export interface Act {
     tm_id: string;
     tm_url: string;
-    tm_images: Image[];
+    images: Image[];
     name: string;
     bio?: string;
     website?: string;
@@ -39,24 +117,10 @@ export interface Act {
     date_updated: Date;
 }
 
-export interface Show {
-    tm_id: string;
-    tm_url: string;
-    tm_act_id: string;
-    name: string;
-    venue: Venue;
-    timezone: string;
-    date_start: Date;
-    date_created: Date;
-    date_updated: Date;
-}
-
-// -- Define mongoose schemas
-
 const ActSchema = new Schema<Act>({
     tm_id: { type: String, unique: true, required: true },
     tm_url: { type: String, unique: true, required: true },
-    tm_images: {
+    images: {
         type: [{
             ratio: { type: String },
             url: { type: String },
@@ -75,30 +139,4 @@ const ActSchema = new Schema<Act>({
     date_updated: { type: Date, default: Date.now() }
 });
 
-const ShowSchema = new Schema<Show>({
-    tm_id: { type: String, unique: true, required: true },
-    tm_url: { type: String, unique: true, required: true },
-    tm_act_id: { type: String, required: true },
-    name: { type: String, required: true },
-    venue: { type: {
-        tm_id: { type: String },
-        tm_url: { type: String },
-        name: { type: String },
-        locale: { type: String },
-        address: { type: String },
-        city: { type: String },
-        state: { type: String },
-        post_code: { type: String },
-        country: { type: String },
-        country_code: { type: String }
-    }},
-    timezone: { type: String, required: true },
-    date_start: { type: Date, required: true },
-    date_created: { type: Date, default: Date.now() },
-    date_updated: { type: Date, default: Date.now() }
-});
-
-// -- Link models to mongoose and export
-
 export const ActModel = mongoose.model<Act>("Act", ActSchema);
-export const ShowModel = mongoose.model<Show>("Show", ShowSchema);

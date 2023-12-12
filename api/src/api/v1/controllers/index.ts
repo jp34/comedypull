@@ -1,2 +1,2 @@
 export * as ActController from "./act.controller";
-export * as ProcessController from "./process.controller";
+export * as CommandController from "./command.controller";
