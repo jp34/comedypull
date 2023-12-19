@@ -7,6 +7,49 @@ import { upsertVenue } from "./venue.service";
 import { upsertShow } from "./show.service";
 import { v4 } from "uuid";
 
+class UpdateContainer {
+
+    private a: TMAct;
+    private versionId: string;
+    private attempts: number = 0;
+
+    constructor(a: TMAct, versionId: string) {
+        this.a = a;
+        this.versionId = versionId;
+    }
+
+    public static create(a: TMAct, versionId: string) {
+        return new UpdateContainer(a, versionId);
+    }
+
+    public async start(n: number): Promise<void> {
+        do {
+            try {
+                this.attempts++;
+                await this.attempt();
+                logger.info(`Updated act:${this.a.id} - update:${this.versionId}`, {
+                    act: this.a.id,
+                    update: this.versionId
+                });
+            } catch (err: any) {
+                logger.debug(`Update attempt failed for act:${this.a.id} - update:${this.versionId}`, {
+                    act: this.a.id,
+                    update: this.versionId
+                });
+            }
+        } while (this.attempts < n);
+    }
+
+    private async attempt(): Promise<void> {
+        await upsertAct(this.a, this.versionId);
+        const shows: Array<[TMShow, TMVenue]> = await fetchShowsByActId(this.a.id);
+        shows.forEach(async (s: [TMShow, TMVenue]) => {
+            await upsertVenue(s[1], this.versionId);
+            await upsertShow(s[0], this.versionId);
+        });
+    }
+}
+
 export class DatabaseUpdateService {
 
     public static async start(): Promise<void> {
@@ -22,8 +65,10 @@ export class DatabaseUpdateService {
     }
 
     private static async updateDatabase(versionId: string): Promise<void> {
+        logger.info(`Database update started - update:${versionId}`, { versionId });
         // Fetch top acts from ticketmaster
         const acts: TMAct[] = await fetchActs(Env.TM_ACT_LIMIT, 0);
+        var containers: UpdateContainer = acts.map((a: TMAct) => )
         // If no data is available, end update
         if (acts.length == 0) throw new Error("Ticketmaster unavailable");
         // Otherwise, upsert all acts into database
