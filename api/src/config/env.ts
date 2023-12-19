@@ -44,6 +44,10 @@ if (TM_EVENTS_URL === "undefined") throw new Error("Missing environment variable
 const TM_ACT_LIMIT = process.env.TM_ACT_LIMIT ?? -1;
 if (TM_ACT_LIMIT == -1) throw new Error("Missing environment variable: TM_ACT_LIMIT");
 
+// TM_RATE_LIMIT
+const TM_RATE_LIMIT = process.env.TM_RATE_LIMIT ?? -1;
+if (TM_RATE_LIMIT == -1) throw new Error("Missing environment variable: TM_RATE_LIMIT");
+
 const Env = {
     DEBUG,
     LOG_LEVEL,
@@ -55,7 +59,8 @@ const Env = {
     TM_SUBGENRE_ID,
     TM_ATTRACTIONS_URL,
     TM_EVENTS_URL,
-    TM_ACT_LIMIT: parseInt(TM_ACT_LIMIT)
+    TM_ACT_LIMIT: parseInt(TM_ACT_LIMIT),
+    TM_RATE_LIMIT: parseInt(TM_RATE_LIMIT)
 };
 
 export default Env;

@@ -4,7 +4,7 @@ import { TMAct, TMGeo, TMAddress, TMImage, TMShow, TMVenue } from "../models";
 import axios, { AxiosResponse } from "axios";
 import axiosRateLimit from "axios-rate-limit";
 
-const client = axiosRateLimit(axios.create(), { maxRPS: 5 });
+const client = axiosRateLimit(axios.create(), { maxRPS: Env.TM_RATE_LIMIT });
 
 const buildAttractionSearchParams = (size: number, page: number): URLSearchParams => {
     return new URLSearchParams({
