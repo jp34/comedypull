@@ -7,19 +7,38 @@ import { upsertVenue } from "./venue.service";
 import { upsertShow } from "./show.service";
 import { v4 } from "uuid";
 
+enum UpdateContainerStatus {
+    READY = "READY",
+    STARTED = "STARTED",
+    DONE = "DONE",
+    FAILED = "FAILED"
+}
+
+interface UpdateContainerResult {
+    attempts: number;
+    success: boolean;
+}
+
 class UpdateContainer {
 
     private a: TMAct;
     private versionId: string;
-    private attempts: number = 0;
+    private attempts: number;
+    private s: UpdateContainerStatus;
 
     constructor(a: TMAct, versionId: string) {
         this.a = a;
         this.versionId = versionId;
+        this.attempts = 0;
+        this.s = UpdateContainerStatus.READY;
     }
 
     public static create(a: TMAct, versionId: string) {
         return new UpdateContainer(a, versionId);
+    }
+
+    public status() {
+        return this.s;
     }
 
     public async start(n: number): Promise<void> {
@@ -66,15 +85,11 @@ export class DatabaseUpdateService {
 
     private static async updateDatabase(versionId: string): Promise<void> {
         logger.info(`Database update started - update:${versionId}`, { versionId });
-        // Fetch top acts from ticketmaster
         const acts: TMAct[] = await fetchActs(Env.TM_ACT_LIMIT, 0);
-        var containers: UpdateContainer = acts.map((a: TMAct) => )
-        // If no data is available, end update
-        if (acts.length == 0) throw new Error("Ticketmaster unavailable");
-        // Otherwise, upsert all acts into database
-        acts.forEach(async (a: TMAct, index: number) => {
-            await DatabaseUpdateService.updateDatabaseEntry(a, versionId);
-        });
+        var containers: Array<UpdateContainer> = acts.map((a: TMAct) => UpdateContainer.create(a, versionId));
+        var updateCount: number = 0;
+        containers.forEach((c: UpdateContainer) => c.start(2).then(() => { updateCount++; }));
+        
     }
 
     private static async updateDatabaseEntry(a: TMAct, versionId: string): Promise<void> {
