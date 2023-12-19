@@ -8,6 +8,9 @@ import { ActRouter, CommandRouter } from "./api/v1/routes";
 import { errorHandler } from "./api/v1/middleware/error";
 import logger from "./config/logger";
 
+// Log configuration settings
+logger.debug("Server Configuration", { ...Env });
+
 // Connect to MongoDB
 connect();
 
@@ -26,7 +29,7 @@ app.use(errorHandler);
 
 // Start express app
 app.listen(parseInt(Env.PORT), Env.HOST, () => {
-    logger.info(`Server listening on port ${Env.PORT}...`);
+    logger.info("Server started", { HOST: Env.HOST, PORT: Env.PORT });
 });
 
 // Export started server so it can be imported by tests

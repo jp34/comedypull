@@ -10,7 +10,7 @@ export interface Image {
 export interface Address {
     address: string;
     city: string;
-    post_code: string;
+    postCode: string;
     state: {
         name: string;
         code: string;
@@ -30,20 +30,19 @@ export interface Geo {
 // -- Venue Model - Defines a single venue hosting a comedy event
 
 export interface Venue {
-    tm_id: string;
-    tm_url: string;
-    name: string;
+    id: string;
+    url: string;
+    name?: string;
     geo: Geo;
     address: Address;
     locale: string;
-    date_created: Date;
-    date_updated: Date;
+    versionId: string;
 }
 
 const VenueSchema = new Schema<Venue>({
-    tm_id: { type: String, unique: true, required: true },
-    tm_url: { type: String, unique: true, required: true },
-    name: { type: String, required: true },
+    id: { type: String, unique: true, required: true, immutable: true },
+    url: { type: String, required: true, immutable: true },
+    name: { type: String, sparse: true },
     geo: {
         latitude: { type: String, required: true },
         longitude: { type: String, required: true }
@@ -51,7 +50,7 @@ const VenueSchema = new Schema<Venue>({
     address: {
         address: { type: String, required: true },
         city: { type: String, required: true },
-        post_code: { type: String, required: true },
+        postCode: { type: String, required: true },
         state: {
             name: { type: String },
             code: { type: String }
@@ -62,9 +61,8 @@ const VenueSchema = new Schema<Venue>({
         }
     },
     locale: { type: String, required: true },
-    date_created: { type: Date, default: Date.now() },
-    date_updated: { type: Date, default: Date.now() }
-});
+    versionId: { type: String, required: true }
+}, { timestamps: true });
 
 export const VenueModel = mongoose.model<Venue>("Venue", VenueSchema);
 
@@ -72,30 +70,28 @@ export const VenueModel = mongoose.model<Venue>("Venue", VenueSchema);
 // -- Show Model - Defines a single comedy event
 
 export interface Show {
-    tm_id: string;
-    tm_url: string;
-    act_id: string;
-    venue_id: string;
-    name: string;
+    id: string;
+    url: string;
+    actId: string;
+    venueId: string;
+    name?: string;
     timezone: string;
     locale: string;
-    date_start: Date;
-    date_created: Date;
-    date_updated: Date;
+    dateStart: Date;
+    versionId: string;
 }
 
 const ShowSchema = new Schema<Show>({
-    tm_id: { type: String, unique: true, required: true },
-    tm_url: { type: String, unique: true, required: true },
-    act_id: { type: String, required: true },
-    venue_id: { type: String, required: true },
-    name: { type: String, required: true },
+    id: { type: String, unique: true, required: true, immutable: true },
+    url: { type: String, required: true, immutable: true },
+    actId: { type: String, required: true, immutable: true },
+    venueId: { type: String, required: true },
+    name: { type: String, sparse: true },
     timezone: { type: String, required: true },
     locale: { type: String, required: true },
-    date_start: { type: Date, required: true },
-    date_created: { type: Date, default: Date.now() },
-    date_updated: { type: Date, default: Date.now() }
-});
+    dateStart: { type: Date, required: true },
+    versionId: { type: String, required: true }
+}, { timestamps: true });
 
 export const ShowModel = mongoose.model<Show>("Show", ShowSchema);
 
@@ -103,23 +99,28 @@ export const ShowModel = mongoose.model<Show>("Show", ShowSchema);
 // -- Act Model - Defines a single comedian
 
 export interface Act {
-    tm_id: string;
-    tm_url: string;
-    images: Image[];
+    id: string;
+    url: string;
     name: string;
     bio?: string;
     website?: string;
-    social_instagram?: string;
-    social_twitter?: string;
-    social_facebook?: string;
+    images: Image[];
+    social: [
+        {
+            platform: string;
+            handle: string;
+        }
+    ];
     locale: string;
-    date_created: Date;
-    date_updated: Date;
+    versionId: string;
 }
 
 const ActSchema = new Schema<Act>({
-    tm_id: { type: String, unique: true, required: true },
-    tm_url: { type: String, unique: true, required: true },
+    id: { type: String, unique: true, required: true, immutable: true },
+    url: { type: String, unique: true, required: true, immutable: true },
+    name: { type: String, unique: true, required: true },
+    bio: { type: String, sparse: true },
+    website: { type: String, sparse: true },
     images: {
         type: [{
             ratio: { type: String },
@@ -128,15 +129,14 @@ const ActSchema = new Schema<Act>({
             height: { type: Number }
         }],
     },
-    name: { type: String, unique: true, required: true},
-    bio: { type: String },
-    website: { type: String, unique: true, sparse: true },
-    social_instagram: { type: String, unique: true, sparse: true },
-    social_twitter: { type: String, unique: true, sparse: true },
-    social_facebook: { type: String, unique: true, sparse: true },
+    social: [
+        {
+            platform: { type: String },
+            handle: { type: String }
+        }
+    ],
     locale: { type: String, required: true},
-    date_created: { type: Date, default: Date.now() },
-    date_updated: { type: Date, default: Date.now() }
-});
+    versionId: { type: String, required: true }
+}, { timestamps: true });
 
 export const ActModel = mongoose.model<Act>("Act", ActSchema);

@@ -6,14 +6,12 @@ export const errorHandler = async (error: Error, request: Request, response: Res
     if (error instanceof ConfigurationError) {
         logger.warn('ConfigurationError', {
             cause: error.message,
-            ip: request.ip,
-            timestamp: Date.now()
+            ip: request.ip
         });
     } else {
         logger.warn('Unknown Error', {
             cause: error.message,
-            ip: request.ip,
-            timestamp: Date.now()
+            ip: request.ip
         });
     }
     next();

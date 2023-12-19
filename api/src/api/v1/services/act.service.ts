@@ -1,25 +1,15 @@
+import { UpdateWriteOpResult } from "mongoose";
 import { Act, ActModel, TMAct } from "../models";
-import logger from "../../../config/logger";
 
-export const upsertAct = async (a: TMAct): Promise<void> => {
-    try {
-        await ActModel.updateOne({ tm_id: a.id }, {
-            tm_id: a.id,
-            tm_url: a.url,
-            images: a.images,
-            name: a.name,
-            locale: a.locale,
-            date_updated: new Date(Date.now())
-        }, { upsert: true });
-    } catch (err: any) {
-        logger.error("Operation failed", {
-            resource: `act:${a.id}`,
-            data: a,
-            operation: "upsertAct",
-            cause: err.message,
-            timestamp: new Date(Date.now()).toISOString()
-        });
-    }
+export const upsertAct = async (a: TMAct, versionId: string): Promise<UpdateWriteOpResult> => {
+    return await ActModel.updateOne({ id: a.id }, {
+        id: a.id,
+        url: a.url,
+        name: a.name,
+        images: a.images,
+        locale: a.locale,
+        versionId: versionId
+    }, { upsert: true });
 }
 
 export const findActs = async (): Promise<Act[]> => {
