@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { DatabaseUpdateService } from "../services";
+import { updateDatabase } from "../services";
 
 export const postCommand = async (request: Request, response: Response, next: NextFunction) => {
     try {
@@ -7,7 +7,7 @@ export const postCommand = async (request: Request, response: Response, next: Ne
         switch (command) {
             case "update": {
                 response.status(200).send();
-                await DatabaseUpdateService.start();
+                await updateDatabase();
             }
         }
         next();

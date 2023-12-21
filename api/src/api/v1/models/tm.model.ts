@@ -1,17 +1,38 @@
-import { Image, Geo, Address } from "./entity.model";
 
-export interface TMImage extends Image {}
-export interface TMAddress extends Address {}
-export interface TMGeo extends Geo {}
+export interface TMImage {
+    ratio: string;
+    url: string;
+    width: number;
+    height: number;
+}
+
+export interface TMAddress {
+    address: string;
+    city: string;
+    postCode: string;
+    state: {
+        name: string;
+        code: string;
+    }
+    country: {
+        name: string;
+        code: string;
+    }
+}
+
+export interface TMGeo {
+    latitude: number;
+    longitude: number;
+}
 
 export interface TMVenue {
     id: string;
     url: string;
     name: string;
-    locale: string;
-    address: TMAddress;
     geo: TMGeo;
-    images: Image[];
+    address: TMAddress;
+    images: TMImage[];
+    locale: string;
 }
 
 export interface TMShow {
@@ -20,16 +41,16 @@ export interface TMShow {
     actId: string;
     venueId: string;
     name: string;
-    timezone: string;
-    locale: string;
     dateStart: Date;
+    timezone: string;
     images: TMImage[];
+    locale: string;
 }
 
 export interface TMAct {
     id: string;
     url: string;
     name: string;
-    locale: string;
     images: TMImage[];
+    locale: string;
 }

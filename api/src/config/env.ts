@@ -24,6 +24,10 @@ if (PORT === "undefined") throw new ConfigurationError("Missing environment vari
 const DB_STRING = process.env.DB_STRING ?? "undefined";
 if (DB_STRING === "undefined") throw new ConfigurationError("Missing environment variable: DB_STRING");
 
+// ENGINE_RETRY_LIMIT
+const ENGINE_RETRY_LIMIT = process.env.ENGINE_RETRY_LIMIT ?? -1;
+if (ENGINE_RETRY_LIMIT == -1) throw new Error("Missing environment variable: ENGINE_RETRY_LIMIT");
+
 // TM_API_KEY : TicketMaster api key
 const TM_API_KEY = process.env.TM_API_KEY ?? "undefined";
 if (TM_API_KEY === "undefined") throw new Error("Missing environment variable: TM_API_KEY");
@@ -44,6 +48,10 @@ if (TM_EVENTS_URL === "undefined") throw new Error("Missing environment variable
 const TM_ACT_LIMIT = process.env.TM_ACT_LIMIT ?? -1;
 if (TM_ACT_LIMIT == -1) throw new Error("Missing environment variable: TM_ACT_LIMIT");
 
+// TM_RATE_LIMIT
+const TM_RATE_LIMIT = process.env.TM_RATE_LIMIT ?? -1;
+if (TM_RATE_LIMIT == -1) throw new Error("Missing environment variable: TM_RATE_LIMIT");
+
 const Env = {
     DEBUG,
     LOG_LEVEL,
@@ -51,11 +59,13 @@ const Env = {
     HOST,
     PORT,
     DB_STRING,
+    ENGINE_RETRY_LIMIT: parseInt(ENGINE_RETRY_LIMIT),
     TM_API_KEY,
     TM_SUBGENRE_ID,
     TM_ATTRACTIONS_URL,
     TM_EVENTS_URL,
-    TM_ACT_LIMIT: parseInt(TM_ACT_LIMIT)
+    TM_ACT_LIMIT: parseInt(TM_ACT_LIMIT),
+    TM_RATE_LIMIT: parseInt(TM_RATE_LIMIT)
 };
 
 export default Env;
