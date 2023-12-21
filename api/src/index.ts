@@ -4,7 +4,7 @@ import morgan from "morgan";
 
 import Env from "./config/env";
 import { connect } from "./config/db";
-import { ActRouter, CommandRouter } from "./api/v1/routes";
+import { ActRouter, EngineRouter } from "./api/v1/routes";
 import { errorHandler } from "./api/v1/middleware/error";
 import logger from "./config/logger";
 
@@ -17,7 +17,7 @@ connect();
 // Configure v1 routes
 const router = Router();
 router.use("/a", ActRouter);
-router.use("/c", CommandRouter);
+router.use("/e", EngineRouter);
 
 // Configure express app
 const app = express();
