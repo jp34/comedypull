@@ -80,6 +80,8 @@ const VenueSchema = new mongoose.Schema<Venue>({
     updatedAt: { type: Date }
 }, { timestamps: true });
 
+VenueSchema.index({ location: "2dsphere" });
+
 export const VenueModel = mongoose.model<Venue>("Venue", VenueSchema);
 
 
@@ -111,6 +113,8 @@ const ShowSchema = new mongoose.Schema<Show>({
     createdAt: { type: Date },
     updatedAt: { type: Date }
 }, { timestamps: true });
+
+ShowSchema.index({ location: "2dsphere" });
 
 export const ShowModel = mongoose.model<Show>("Show", ShowSchema);
 
