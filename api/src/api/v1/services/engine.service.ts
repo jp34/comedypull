@@ -28,10 +28,10 @@ export const updateDatabase = async (): Promise<void> => {
     await createUpdate(updateId);
     logger.info("Database update started", { updateId });
     try {
-        const tmActs: Array<TMAct> = await fetchActs(Env.TM_ACT_LIMIT, 0);          // Fetch top acts from Ticketmaster
-        const acts: Array<Act> = tmActs.map((a: TMAct) => mapToAct(a, updateId));     // Map from TMAct to Act
-        const actResult: BulkWriteResult = await upsertActs(acts);                  // Upsert acts into database
-        updateResult.actCount = (actResult.modifiedCount + actResult.upsertedCount);
+        const tmActs: Array<TMAct> = await fetchActs(Env.TM_ACT_LIMIT, 0);              // Fetch top acts from Ticketmaster
+        const acts: Array<Act> = tmActs.map((a: TMAct) => mapToAct(a, updateId));       // Map from TMAct to Act
+        const actResult: BulkWriteResult = await upsertActs(acts);                      // Upsert acts into database
+        updateResult.actCount = (actResult.modifiedCount + actResult.upsertedCount);    // Record result to result object
 
         // Fetch all the acts newly inserted into the database
         const inserted: Array<Act> = await findActsByVersion(updateId, "id");

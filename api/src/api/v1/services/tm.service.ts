@@ -125,7 +125,6 @@ const parseImage = (obj: any): TMImage => {
 }
 
 const parseImages = (images: any[]): Array<TMImage> => {
-    let parsed: TMImage[] = [];
-    if (images != null) images.forEach((i: any) => parseImage(i));
-    return parsed;
+    if (images == null) return [];
+    return images.map((i: any) => parseImage(i));
 }
