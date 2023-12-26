@@ -70,6 +70,10 @@ const ShowSchema = new Schema<Show>({
     name: { type: String, required: true },
     dateStart: { type: Date, required: true },
     timezone: { type: String, required: true },
+    geo: {
+        latitude: { type: String, required: true },
+        longitude: { type: String, required: true }
+    },
     images: {
         type: [{
             ratio: { type: String },

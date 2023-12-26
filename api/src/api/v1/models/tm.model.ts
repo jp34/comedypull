@@ -43,6 +43,7 @@ export interface TMShow {
     name: string;
     dateStart: Date;
     timezone: string;
+    geo: TMGeo;
     images: TMImage[];
     locale: string;
 }
