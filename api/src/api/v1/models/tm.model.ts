@@ -6,6 +6,11 @@ export interface TMImage {
     height: number;
 }
 
+export interface TMLocation {
+    type: String;
+    coordinates: number[];
+}
+
 export interface TMAddress {
     address: string;
     city: string;
@@ -20,16 +25,11 @@ export interface TMAddress {
     }
 }
 
-export interface TMGeo {
-    latitude: number;
-    longitude: number;
-}
-
 export interface TMVenue {
     id: string;
     url: string;
     name: string;
-    geo: TMGeo;
+    location: TMLocation;
     address: TMAddress;
     images: TMImage[];
     locale: string;
@@ -43,7 +43,7 @@ export interface TMShow {
     name: string;
     dateStart: Date;
     timezone: string;
-    geo: TMGeo;
+    location: TMLocation;
     images: TMImage[];
     locale: string;
 }

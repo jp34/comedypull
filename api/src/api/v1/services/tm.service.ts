@@ -1,6 +1,6 @@
 import Env from "../../../config/env";
 import logger from "../../../config/logger";
-import { TMAct, TMImage, TMShow, TMVenue, TMAddress, TMGeo } from "../models";
+import { TMAct, TMImage, TMShow, TMVenue, TMAddress, TMLocation } from "../models";
 import axios, { AxiosResponse } from "axios";
 import axiosRateLimit from "axios-rate-limit";
 
@@ -77,7 +77,7 @@ const parseShow = (obj: any): [TMShow, TMVenue] => {
         timezone: obj.dates.timezone,
         locale: obj.locale,
         dateStart: obj.dates.start.dateTime,
-        geo: venue.geo,
+        location: venue.location,
         images,
     }
     return [show, venue];
@@ -98,9 +98,12 @@ const parseVenue = (obj: any): TMVenue => {
         }
     };
 
-    let geo: TMGeo = {
-        latitude: obj.location.latitude,
-        longitude: obj.location.longitude
+    let location: TMLocation = {
+        type: "Point",
+        coordinates: [
+            parseFloat(obj.location.longitude),
+            parseFloat(obj.location.latitude)
+        ]
     }
 
     let images: TMImage[] = parseImages(obj.images);
@@ -111,7 +114,7 @@ const parseVenue = (obj: any): TMVenue => {
         name: obj.name,
         locale: obj.locale,
         address,
-        geo,
+        location,
         images
     }
 }
