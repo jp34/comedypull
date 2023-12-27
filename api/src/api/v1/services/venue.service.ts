@@ -1,5 +1,5 @@
 import { BulkWriteResult } from "mongodb";
-import { TMVenue, Venue, VenueModel, VenueSearchParams } from "../domain";
+import { TMVenue, Venue, VenueDTO, VenueModel, VenueSearchParams } from "../domain";
 
 export const mapToVenue = (venue: TMVenue, version: string): Venue => {
     return {
@@ -20,15 +20,18 @@ export const upsertVenues = async (venues: Array<Venue>): Promise<BulkWriteResul
     })));
 }
 
-export const findVenues = async (params: VenueSearchParams): Promise<Array<Venue>> => {
+export const findVenues = async (params: VenueSearchParams): Promise<Array<VenueDTO>> => {
     const limit: number = (params.size) ? params.size : 10;
     const offset: number = ((params.page) ? params.page : 0) * limit;
     return await VenueModel.find(params.filter)
         .limit(limit)
         .skip(offset)
+        .select({ _id: 0, __v: 0 })
         .lean();
 }
 
-export const findVenue = async (params: VenueSearchParams): Promise<Venue | null> => {
-    return await VenueModel.findOne(params.filter).lean();
+export const findVenue = async (params: VenueSearchParams): Promise<VenueDTO | null> => {
+    return await VenueModel.findOne(params.filter)
+        .select({ _id: 0, __v: 0 })
+        .lean();
 }

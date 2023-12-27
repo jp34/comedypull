@@ -1,5 +1,5 @@
 import { BulkWriteResult } from "mongodb";
-import { TMShow, Show, ShowModel } from "../domain";
+import { TMShow, Show, ShowModel, ShowDTO, ShowSearchParams } from "../domain";
 
 export const mapToShow = (show: TMShow, version: string): Show => {
     return {
@@ -18,4 +18,20 @@ export const upsertShows = async (shows: Array<Show>): Promise<BulkWriteResult> 
             upsert: true
         }
     })));
+}
+
+export const findShows = async (params: ShowSearchParams): Promise<Array<ShowDTO>> => {
+    const limit: number = (params.size) ? params.size : 10;
+    const offset: number = ((params.page) ? params.page : 0) * limit;
+    return await ShowModel.find(params.filter)
+        .limit(limit)
+        .skip(offset)
+        .select({ _id: 0, __v: 0 })
+        .lean();
+}
+
+export const findShow = async (params: ShowSearchParams): Promise<ShowDTO | null> => {
+    return await ShowModel.findOne(params.filter)
+        .select({ _id: 0, __v: 0 })
+        .lean();
 }

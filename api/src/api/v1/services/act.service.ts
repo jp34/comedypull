@@ -1,5 +1,5 @@
 import { BulkWriteResult } from "mongodb";
-import { TMAct, Act, ActModel } from "../domain";
+import { TMAct, Act, ActModel, ActSearchParams, ActDTO } from "../domain";
 
 export const mapToAct = (act: TMAct, version: string): Act => {
     return {
@@ -20,14 +20,18 @@ export const upsertActs = async (acts: Array<Act>): Promise<BulkWriteResult> => 
     })));
 }
 
-export const findActs = async (): Promise<Array<Act>> => {
-    return await ActModel.find().lean();
+export const findActs = async (params: ActSearchParams): Promise<Array<ActDTO>> => {
+    const limit: number = (params.size) ? params.size : 10;
+    const offset: number = ((params.page) ? params.page : 0) * limit;
+    return await ActModel.find(params.filter)
+        .limit(limit)
+        .skip(offset)
+        .select({ _id: 0, __v: 0 })
+        .lean();
 }
 
-export const findActsByVersion = async (version: string, select: string = ""): Promise<Array<Act>> => {
-    return await ActModel.find({ version }).lean().select(select);
-}
-
-export const findActById = async (id: string, select: string = ""): Promise<Act> => {
-    return await ActModel.findById(id).lean().select(select);
+export const findAct = async (params: ActSearchParams): Promise<ActDTO | null> => {
+    return await ActModel.findOne(params.filter)
+        .select({ _id: 0, __v: 0 })
+        .lean();
 }
