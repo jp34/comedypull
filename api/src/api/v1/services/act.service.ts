@@ -1,5 +1,5 @@
 import { BulkWriteResult } from "mongodb";
-import { TMAct, Act, ActModel } from "../models";
+import { TMAct, Act, ActModel } from "../domain";
 
 export const mapToAct = (act: TMAct, version: string): Act => {
     return {
@@ -20,8 +20,8 @@ export const upsertActs = async (acts: Array<Act>): Promise<BulkWriteResult> => 
     })));
 }
 
-export const findActs = async (select: string = ""): Promise<Array<Act>> => {
-    return await ActModel.find().lean().select(select);
+export const findActs = async (): Promise<Array<Act>> => {
+    return await ActModel.find().lean();
 }
 
 export const findActsByVersion = async (version: string, select: string = ""): Promise<Array<Act>> => {

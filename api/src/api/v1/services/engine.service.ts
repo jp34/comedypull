@@ -6,7 +6,7 @@ import {
     TMAct,
     TMShow,
     TMVenue
-} from "../models";
+} from "../domain";
 import { fetchActs, fetchShowsByActId } from "./tm.service";
 import { upsertActs, mapToAct, findActsByVersion } from "./act.service";
 import { upsertVenues, mapToVenue } from "./venue.service";

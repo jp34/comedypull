@@ -1,6 +1,6 @@
 import Env from "../../../config/env";
 import logger from "../../../config/logger";
-import { TMAct, TMImage, TMShow, TMVenue, TMAddress, TMLocation } from "../models";
+import { TMAct, TMImage, TMShow, TMVenue, TMAddress, TMLocation } from "../domain";
 import axios, { AxiosResponse } from "axios";
 import axiosRateLimit from "axios-rate-limit";
 

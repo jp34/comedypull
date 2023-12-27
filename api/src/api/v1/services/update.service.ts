@@ -1,4 +1,4 @@
-import { UpdateModel, UpdateStatus } from "../models"
+import { UpdateModel, UpdateStatus } from "../domain"
 
 export const createUpdate = async (id: string): Promise<void> => {
     await UpdateModel.create({ id });

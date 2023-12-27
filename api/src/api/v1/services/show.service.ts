@@ -1,5 +1,5 @@
 import { BulkWriteResult } from "mongodb";
-import { TMShow, Show, ShowModel } from "../models";
+import { TMShow, Show, ShowModel } from "../domain";
 
 export const mapToShow = (show: TMShow, version: string): Show => {
     return {
