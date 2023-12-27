@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import { ActDTO, ActSearchParams, InvalidInputError } from "../domain";
-import { findActs, findAct } from "../services/act.service";
+import { VenueDTO, VenueSearchParams, InvalidInputError } from "../domain";
+import { findVenues, findVenue } from "../services";
 
-const mapToActSearchParams = (params: any): ActSearchParams => {
-    const searchParams: ActSearchParams = {
+const mapToVenueSearchParams = (params: any): VenueSearchParams => {
+    const searchParams: VenueSearchParams = {
         filter: {
             id: params.id ?? undefined,
             url: params.url ?? undefined,
@@ -22,8 +22,8 @@ const mapToActSearchParams = (params: any): ActSearchParams => {
 
 export const getMany = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     try {
-        const params: ActSearchParams = mapToActSearchParams(request.params);
-        const data: ActDTO[] = await findActs(params);
+        const params: VenueSearchParams = mapToVenueSearchParams(request.params);
+        const data: VenueDTO[] = await findVenues(params);
         response.status(200).json({ data });
         next();
     } catch (err: any) {
@@ -33,10 +33,10 @@ export const getMany = async (request: Request, response: Response, next: NextFu
 
 export const getOne = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     try {
-        const params: ActSearchParams = mapToActSearchParams(request.params);
+        const params: VenueSearchParams = mapToVenueSearchParams(request.params);
         const id: string = request.params.id;
         if (!id) throw new InvalidInputError("id");
-        const data: ActDTO = await findAct({ filter: { id }});
+        const data: VenueDTO = await findVenue({ filter: { id }});
         response.status(200).json({ data });
         next();
     } catch (err: any) {

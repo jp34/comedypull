@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { updateDatabase } from "../services";
 
-export const postCommand = async (request: Request, response: Response, next: NextFunction) => {
+export const postCommand = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     try {
         const command: string = request.params.command;
         switch (command) {

@@ -1,12 +1,11 @@
-import express, { Router } from "express";
-import bodyParser from "body-parser";
-import morgan from "morgan";
-
 import Env from "./config/env";
 import { connect } from "./config/db";
-import { ActRouter, EngineRouter } from "./api/v1/routes";
+import { V1Router } from "./api/v1/routes";
 import { errorHandler } from "./api/v1/middleware/error";
 import logger from "./config/logger";
+import express from "express";
+import bodyParser from "body-parser";
+import morgan from "morgan";
 
 // Log configuration settings
 logger.debug("Server Configuration", { ...Env });
@@ -14,17 +13,17 @@ logger.debug("Server Configuration", { ...Env });
 // Connect to MongoDB
 connect();
 
-// Configure v1 routes
-const router = Router();
-router.use("/a", ActRouter);
-router.use("/e", EngineRouter);
-
 // Configure express app
 const app = express();
 
+// Add pre-controller middleware
 app.use(bodyParser.json());
 app.use(morgan("combined"));
-app.use("/api/v1", router);
+
+// Add routes
+app.use("/api/v1", V1Router);
+
+// Add post-controller middleware
 app.use(errorHandler);
 
 // Start express app

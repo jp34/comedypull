@@ -21,7 +21,7 @@ export interface Show {
 }
 
 export interface ShowSearchParams {
-    filter: {
+    filter?: {
         id?: string;
         url?: string;
         actId?: string;
@@ -32,7 +32,7 @@ export interface ShowSearchParams {
         locale?: string;
         version?: string;
     }
-    populate: {
+    populate?: {
         acts?: boolean;
         venues?: boolean;
     }

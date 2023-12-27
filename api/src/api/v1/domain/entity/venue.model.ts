@@ -18,14 +18,14 @@ export interface Venue {
 }
 
 export interface VenueSearchParams {
-    filter: {
+    filter?: {
         id?: string;
         url?: string;
         name?: string;
         locale?: string;
         version?: string;
     }
-    populate: {
+    populate?: {
         shows?: boolean;
     }
     size?: number;

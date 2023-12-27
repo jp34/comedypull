@@ -1,5 +1,5 @@
 import { BulkWriteResult } from "mongodb";
-import { TMAct, Act, ActModel, ActSearchParams, ActDTO } from "../domain";
+import { TMAct, Act, ActModel, ActSearchParams, ActDTO, NonExistentResourceError } from "../domain";
 
 export const mapToAct = (act: TMAct, version: string): Act => {
     return {
@@ -20,18 +20,23 @@ export const upsertActs = async (acts: Array<Act>): Promise<BulkWriteResult> => 
     })));
 }
 
-export const findActs = async (params: ActSearchParams): Promise<Array<ActDTO>> => {
+export const findActs = async (params: ActSearchParams = {}): Promise<Array<ActDTO>> => {
     const limit: number = (params.size) ? params.size : 10;
     const offset: number = ((params.page) ? params.page : 0) * limit;
-    return await ActModel.find(params.filter)
+    return await ActModel.find({ ...params.filter })
         .limit(limit)
         .skip(offset)
         .select({ _id: 0, __v: 0 })
         .lean();
 }
 
-export const findAct = async (params: ActSearchParams): Promise<ActDTO | null> => {
-    return await ActModel.findOne(params.filter)
+export const findAct = async (params: ActSearchParams): Promise<ActDTO> => {
+    const act: ActDTO | null = await ActModel
+        .findOne({ ...params.filter })
         .select({ _id: 0, __v: 0 })
         .lean();
+    if (act == undefined) throw new NonExistentResourceError(
+        `Resource does not exist - act:${JSON.stringify(params.filter)}`
+    );
+    return act;
 }

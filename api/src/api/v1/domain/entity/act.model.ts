@@ -15,14 +15,14 @@ export interface Act {
 }
 
 export interface ActSearchParams {
-    filter: {
+    filter?: {
         id?: string;
         url?: string;
         name?: string;
         locale?: string;
         version?: string;
     }
-    populate: {
+    populate?: {
         shows?: boolean;
     }
     size?: number;

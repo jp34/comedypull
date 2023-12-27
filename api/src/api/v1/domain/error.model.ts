@@ -21,8 +21,8 @@ export class InvalidOperationError extends Error {
 }
 
 export class NonExistentResourceError extends Error {
-    constructor(resourceType: string, searchParams: string) {
-        super(`Resource does not exist: ${resourceType}${searchParams}`);
+    constructor(message: string) {
+        super(message);
         Object.setPrototypeOf(this, NonExistentResourceError.prototype);
     }
 }
