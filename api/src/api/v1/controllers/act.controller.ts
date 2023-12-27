@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { ActDTO, ActSearchParams, InvalidInputError } from "../domain";
 import { findActs, findAct } from "../services/act.service";
+import { resolveShowsForAct } from "../services/resolver.service";
 
 const mapToActSearchParams = (params: any): ActSearchParams => {
     const searchParams: ActSearchParams = {
@@ -36,7 +37,8 @@ export const getOne = async (request: Request, response: Response, next: NextFun
         const params: ActSearchParams = mapToActSearchParams(request.params);
         const id: string = request.params.id;
         if (!id) throw new InvalidInputError("id");
-        const data: ActDTO = await findAct({ filter: { id }});
+        var data: ActDTO = await findAct({ filter: { id }});
+        if (params.populate?.shows) data = await resolveShowsForAct(data);
         response.status(200).json({ data });
         next();
     } catch (err: any) {

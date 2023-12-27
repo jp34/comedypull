@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { VenueDTO, VenueSearchParams, InvalidInputError } from "../domain";
 import { findVenues, findVenue } from "../services";
+import { resolveShowsForVenue } from "../services/resolver.service";
 
 const mapToVenueSearchParams = (params: any): VenueSearchParams => {
     const searchParams: VenueSearchParams = {
@@ -36,7 +37,8 @@ export const getOne = async (request: Request, response: Response, next: NextFun
         const params: VenueSearchParams = mapToVenueSearchParams(request.params);
         const id: string = request.params.id;
         if (!id) throw new InvalidInputError("id");
-        const data: VenueDTO = await findVenue({ filter: { id }});
+        var data: VenueDTO = await findVenue({ filter: { id }});
+        if (params.populate?.shows) data = await resolveShowsForVenue(data);
         response.status(200).json({ data });
         next();
     } catch (err: any) {

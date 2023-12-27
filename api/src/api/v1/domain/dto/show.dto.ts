@@ -6,6 +6,8 @@ import { VenueDTO } from "./venue.dto";
 export interface ShowDTO {
     id?: string;
     url?: string;
+    actId?: string;
+    venueId?: string;
     name?: string;
     dateStart?: string;
     timezone?: string;
