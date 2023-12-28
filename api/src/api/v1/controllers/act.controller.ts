@@ -34,7 +34,7 @@ export const getMany = async (request: Request, response: Response, next: NextFu
 
 export const getOne = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     try {
-        const params: ActSearchParams = mapToActSearchParams(request.params);
+        const params: ActSearchParams = mapToActSearchParams(request.query);
         const id: string = request.params.id;
         if (!id) throw new InvalidInputError("id");
         var data: ActDTO = await findAct({ filter: { id }});

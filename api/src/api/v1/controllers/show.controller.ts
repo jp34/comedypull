@@ -39,7 +39,7 @@ export const getMany = async (request: Request, response: Response, next: NextFu
 
 export const getOne = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     try {
-        const params: ShowSearchParams = mapToShowSearchParams(request.params);
+        const params: ShowSearchParams = mapToShowSearchParams(request.query);
         const id: string = request.params.id;
         if (!id) throw new InvalidInputError("id");
         var data: ShowDTO = await findShow({ filter: { id }});
