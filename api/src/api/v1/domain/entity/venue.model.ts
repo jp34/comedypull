@@ -26,12 +26,18 @@ export interface VenueFilter {
 }
 
 export interface VenueQuery {
-    filter: VenueFilter;
+    filter?: VenueFilter;
+    paginate?: {
+        size?: number;
+        page?: number;
+    }
+    location?: {
+        latitude: number;
+        longitude: number;
+    }
     populate?: {
         shows?: boolean;
     }
-    size?: number;
-    page?: number;
 }
 
 const VenueSchema = new mongoose.Schema<Venue>({

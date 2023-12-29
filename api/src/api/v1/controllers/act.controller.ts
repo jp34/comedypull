@@ -3,27 +3,34 @@ import { ActDTO, ActFilter, ActQuery, InvalidInputError } from "../domain";
 import { findActs, findAct } from "../services/act.service";
 import { resolveShowsForAct } from "../services/resolver.service";
 
-const mapToActQuery = (query: any): ActQuery => {
-    const filterObj: ActFilter = {};
-    if (query.id) filterObj.id = query.id;
-    if (query.url) filterObj.url = query.url;
-    if (query.name) filterObj.name = query.name;
-    if (query.locale) filterObj.locale = query.locale;
-    if (query.version) filterObj.version = query.version;
-    const queryObj: ActQuery = {
-        filter: filterObj,
-        populate: {
-            shows: (query.shows === "true") ? true : false
+const parseActFilter = (queryObj: any): ActFilter => {
+    const filter: ActFilter = {};
+    if (queryObj.id) filter.id = queryObj.id;
+    if (queryObj.url) filter.url = queryObj.url;
+    if (queryObj.name) filter.name = queryObj.name;
+    if (queryObj.relevance) filter.relevance = queryObj.relevance;
+    if (queryObj.locale) filter.locale = queryObj.locale;
+    if (queryObj.version) filter.version = queryObj.version;
+    return filter;
+}
+
+const parseActQuery = (queryObj: any): ActQuery => {
+    const query: ActQuery = {
+        filter: parseActFilter(queryObj),
+        paginate: {
+            size: queryObj.size,
+            page: queryObj.page
         },
-        size: query.size,
-        page: query.page
+        populate: {
+            shows: (queryObj.shows === "true") ? true : false
+        }
     };
-    return queryObj;
+    return query;
 }
 
 export const getMany = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     try {
-        const query: ActQuery = mapToActQuery(request.query);
+        const query: ActQuery = parseActQuery(request.query);
         const data: ActDTO[] = await findActs(query);
         response.status(200).json({ data });
         next();
@@ -34,7 +41,7 @@ export const getMany = async (request: Request, response: Response, next: NextFu
 
 export const getOne = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     try {
-        const query: ActQuery = mapToActQuery(request.query);
+        const query: ActQuery = parseActQuery(request.query);
         const id: string = request.params.id;
         if (!id) throw new InvalidInputError("id");
         var data: ActDTO = await findAct({ filter: { id }});

@@ -33,13 +33,19 @@ export interface ShowFilter {
 }
 
 export interface ShowQuery {
-    filter: ShowFilter;
+    filter?: ShowFilter;
+    paginate?: {
+        size?: number;
+        page?: number;
+    }
+    location?: {
+        latitude: number;
+        longitude: number;
+    }
     populate?: {
         acts?: boolean;
         venues?: boolean;
     }
-    size?: number;
-    page?: number;
 }
 
 const ShowSchema = new mongoose.Schema<Show>({

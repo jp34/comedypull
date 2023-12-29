@@ -3,27 +3,37 @@ import { VenueDTO, VenueFilter, VenueQuery, InvalidInputError } from "../domain"
 import { findVenues, findVenue } from "../services";
 import { resolveShowsForVenue } from "../services/resolver.service";
 
-const mapToVenueQuery = (query: any): VenueQuery => {
-    const filterObj: VenueFilter = {};
-    if (query.id) filterObj.id = query.id;
-    if (query.url) filterObj.url = query.url;
-    if (query.name) filterObj.name = query.name;
-    if (query.locale) filterObj.locale = query.locale;
-    if (query.version) filterObj.version = query.version;
-    const queryObj: VenueQuery = {
-        filter: filterObj,
-        populate: {
-            shows: query.shows ?? undefined
+const parseVenueFilter = (queryObj: any): VenueFilter => {
+    const filter: VenueFilter = {};
+    if (queryObj.id) filter.id = queryObj.id;
+    if (queryObj.url) filter.url = queryObj.url;
+    if (queryObj.name) filter.name = queryObj.name;
+    if (queryObj.locale) filter.locale = queryObj.locale;
+    if (queryObj.version) filter.version = queryObj.version;
+    return filter;
+}
+
+const parseVenueQuery = (queryObj: any): VenueQuery => {
+    const query: VenueQuery = {
+        filter: parseVenueFilter(queryObj),
+        paginate: {
+            size: queryObj.size,
+            page: queryObj.page
         },
-        size: query.size ?? undefined,
-        page: query.page ?? undefined
+        location: {
+            latitude: queryObj.latitude,
+            longitude: queryObj.longitude
+        },
+        populate: {
+            shows: (queryObj.shows === "true") ? true : false
+        }
     };
-    return queryObj;
+    return query;
 }
 
 export const getMany = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     try {
-        const query: VenueQuery = mapToVenueQuery(request.params);
+        const query: VenueQuery = parseVenueQuery(request.params);
         const data: VenueDTO[] = await findVenues(query);
         response.status(200).json({ data });
         next();
@@ -34,7 +44,7 @@ export const getMany = async (request: Request, response: Response, next: NextFu
 
 export const getOne = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     try {
-        const params: VenueQuery = mapToVenueQuery(request.query);
+        const params: VenueQuery = parseVenueQuery(request.query);
         const id: string = request.params.id;
         if (!id) throw new InvalidInputError("id");
         var data: VenueDTO = await findVenue({ filter: { id }});

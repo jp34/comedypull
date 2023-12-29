@@ -2,34 +2,46 @@ import { Request, Response, NextFunction } from "express";
 import { ShowDTO, ShowFilter, ShowQuery, InvalidInputError } from "../domain";
 import { findShows, findShow } from "../services";
 import { resolveActForShow, resolveVenueForShow } from "../services/resolver.service";
+import logger from "../../../config/logger";
 
-const mapToShowQuery = (query: any): ShowQuery => {
-    const filterObj: ShowFilter = {};
-    if (query.id) filterObj.id = query.id;
-    if (query.url) filterObj.url = query.url;
-    if (query.actId) filterObj.actId = query.actId;
-    if (query.venueId) filterObj.venueId = query.venueId;
-    if (query.name) filterObj.name = query.name;
-    if (query.dateStart) filterObj.dateStart = query.dateStart;
-    if (query.timezone) filterObj.timezone = query.timezone;
-    if (query.locale) filterObj.locale = query.locale;
-    if (query.version) filterObj.version = query.version;
-    const queryObj: ShowQuery = {
-        filter: filterObj,
-        populate: {
-            acts: query.shows,
-            venues: query.venues,
+const parseShowFilter = (queryObj: any): ShowFilter => {
+    const filter: ShowFilter = {};
+    if (queryObj.id) filter.id = queryObj.id;
+    if (queryObj.url) filter.url = queryObj.url;
+    if (queryObj.actId) filter.actId = queryObj.actId;
+    if (queryObj.venueId) filter.venueId = queryObj.venueId;
+    if (queryObj.name) filter.name = queryObj.name;
+    if (queryObj.dateStart) filter.dateStart = queryObj.dateStart;
+    if (queryObj.timezone) filter.timezone = queryObj.timezone;
+    if (queryObj.locale) filter.locale = queryObj.locale;
+    if (queryObj.version) filter.version = queryObj.version;
+    return filter;
+}
+
+const parseShowQuery = (queryObj: any): ShowQuery => {
+    const query: ShowQuery = {
+        filter: parseShowFilter(queryObj),
+        paginate: {
+            size: queryObj.size,
+            page: queryObj.page
         },
-        size: query.size,
-        page: query.page
+        location: {
+            latitude: queryObj.latitude,
+            longitude: queryObj.longitude
+        },
+        populate: {
+            acts: (queryObj.acts === "true") ? true : false,
+            venues: (queryObj.venues === "true") ? true : false
+        }
     };
-    return queryObj;
+    return query;
 }
 
 export const getMany = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     try {
-        const query: ShowQuery = mapToShowQuery(request.params);
-        const data: ShowDTO[] = await findShows(query);
+        const query: ShowQuery = parseShowQuery(request.query);
+        logger.info(JSON.stringify(query));
+        const data: ShowDTO[] = await findShows(query.filter, query.paginate?.size, query.paginate?.page);
         response.status(200).json({ data });
         next();
     } catch (err: any) {
@@ -39,10 +51,10 @@ export const getMany = async (request: Request, response: Response, next: NextFu
 
 export const getOne = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     try {
-        const query: ShowQuery = mapToShowQuery(request.query);
+        const query: ShowQuery = parseShowQuery(request.query);
         const id: string = request.params.id;
         if (!id) throw new InvalidInputError("id");
-        var data: ShowDTO = await findShow({ filter: { id }});
+        var data: ShowDTO = await findShow({ id });
         if (query.populate?.acts) data = await resolveActForShow(data);
         if (query.populate?.venues) data = await resolveVenueForShow(data);
         response.status(200).json({ data });

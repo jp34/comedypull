@@ -21,9 +21,9 @@ export const upsertVenues = async (venues: Array<Venue>): Promise<BulkWriteResul
 }
 
 export const findVenues = async (query: VenueQuery): Promise<Array<VenueDTO>> => {
-    const limit: number = (query.size) ? query.size : 10;
-    const offset: number = ((query.page) ? query.page : 0) * limit;
-    return await VenueModel.find(query.filter)
+    const limit: number = query.paginate?.size ?? 10;
+    const offset: number = (query.paginate?.page ?? 0) * limit;
+    return await VenueModel.find({ ...query.filter })
         .limit(limit)
         .skip(offset)
         .select({ _id: 0, __v: 0 })
@@ -32,7 +32,7 @@ export const findVenues = async (query: VenueQuery): Promise<Array<VenueDTO>> =>
 
 export const findVenue = async (query: VenueQuery): Promise<VenueDTO> => {
     const venue: VenueDTO | null = await VenueModel
-        .findOne(query.filter)
+        .findOne({ ...query.filter })
         .select({ _id: 0, __v: 0 })
         .lean();
     if (venue == undefined) throw new NonExistentResourceError(

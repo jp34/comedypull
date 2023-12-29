@@ -4,7 +4,7 @@ import { findShows } from "./show.service";
 import { findVenue } from "./venue.service";
 
 export const resolveShowsForAct = async (act: ActDTO): Promise<ActDTO> => {
-    const shows: Array<ShowDTO> = await findShows({ filter: { actId: act.id }});
+    const shows: Array<ShowDTO> = await findShows({ actId: act.id });
     act.shows = shows;
     return act;
 }
@@ -22,7 +22,7 @@ export const resolveVenueForShow = async (show: ShowDTO): Promise<ShowDTO> => {
 }
 
 export const resolveShowsForVenue = async (venue: VenueDTO): Promise<VenueDTO> => {
-    const shows: Array<ShowDTO> = await findShows({ filter: { venueId: venue.id }});
+    const shows: Array<ShowDTO> = await findShows({ venueId: venue.id });
     venue.shows = shows;
     return venue;
 }
