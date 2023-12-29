@@ -20,18 +20,20 @@ export interface Show {
     updatedAt: Date;
 }
 
-export interface ShowSearchParams {
-    filter?: {
-        id?: string;
-        url?: string;
-        actId?: string;
-        venueId?: string;
-        name?: string;
-        dateStart?: Date;
-        timezone?: string;
-        locale?: string;
-        version?: string;
-    }
+export interface ShowFilter {
+    id?: string;
+    url?: string;
+    actId?: string;
+    venueId?: string;
+    name?: string;
+    dateStart?: Date;
+    timezone?: string;
+    locale?: string;
+    version?: string;
+}
+
+export interface ShowQuery {
+    filter: ShowFilter;
     populate?: {
         acts?: boolean;
         venues?: boolean;

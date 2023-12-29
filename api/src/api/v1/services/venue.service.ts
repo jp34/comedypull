@@ -1,5 +1,5 @@
 import { BulkWriteResult } from "mongodb";
-import { NonExistentResourceError, TMVenue, Venue, VenueDTO, VenueModel, VenueSearchParams } from "../domain";
+import { NonExistentResourceError, TMVenue, Venue, VenueDTO, VenueModel, VenueQuery } from "../domain";
 
 export const mapToVenue = (venue: TMVenue, version: string): Venue => {
     return {
@@ -20,23 +20,23 @@ export const upsertVenues = async (venues: Array<Venue>): Promise<BulkWriteResul
     })));
 }
 
-export const findVenues = async (params: VenueSearchParams = {}): Promise<Array<VenueDTO>> => {
-    const limit: number = (params.size) ? params.size : 10;
-    const offset: number = ((params.page) ? params.page : 0) * limit;
-    return await VenueModel.find({ ...params.filter })
+export const findVenues = async (query: VenueQuery): Promise<Array<VenueDTO>> => {
+    const limit: number = (query.size) ? query.size : 10;
+    const offset: number = ((query.page) ? query.page : 0) * limit;
+    return await VenueModel.find(query.filter)
         .limit(limit)
         .skip(offset)
         .select({ _id: 0, __v: 0 })
         .lean();
 }
 
-export const findVenue = async (params: VenueSearchParams): Promise<VenueDTO> => {
+export const findVenue = async (query: VenueQuery): Promise<VenueDTO> => {
     const venue: VenueDTO | null = await VenueModel
-        .findOne({ ...params.filter })
+        .findOne(query.filter)
         .select({ _id: 0, __v: 0 })
         .lean();
     if (venue == undefined) throw new NonExistentResourceError(
-        `Resource does not exist - show:${JSON.stringify(params.filter)}`
+        `Resource does not exist - show:${JSON.stringify(query.filter)}`
     );
     return venue;
 }

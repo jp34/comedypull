@@ -17,14 +17,16 @@ export interface Venue {
     updatedAt: Date;
 }
 
-export interface VenueSearchParams {
-    filter?: {
-        id?: string;
-        url?: string;
-        name?: string;
-        locale?: string;
-        version?: string;
-    }
+export interface VenueFilter {
+    id?: string;
+    url?: string;
+    name?: string;
+    locale?: string;
+    version?: string;
+}
+
+export interface VenueQuery {
+    filter: VenueFilter;
     populate?: {
         shows?: boolean;
     }

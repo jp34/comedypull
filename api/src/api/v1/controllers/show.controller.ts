@@ -1,35 +1,35 @@
 import { Request, Response, NextFunction } from "express";
-import { ShowDTO, ShowSearchParams, InvalidInputError } from "../domain";
+import { ShowDTO, ShowFilter, ShowQuery, InvalidInputError } from "../domain";
 import { findShows, findShow } from "../services";
 import { resolveActForShow, resolveVenueForShow } from "../services/resolver.service";
 
-const mapToShowSearchParams = (params: any): ShowSearchParams => {
-    const searchParams: ShowSearchParams = {
-        filter: {
-            id: params.id ?? undefined,
-            url: params.url ?? undefined,
-            actId: params.actId ?? undefined,
-            venueId: params.venueId ?? undefined,
-            name: params.name ?? undefined,
-            dateStart: params.dateStart ?? undefined,
-            timezone: params.timezone ?? undefined,
-            locale: params.locale ?? undefined,
-            version: params.version ?? undefined
-        },
+const mapToShowQuery = (query: any): ShowQuery => {
+    const filterObj: ShowFilter = {};
+    if (query.id) filterObj.id = query.id;
+    if (query.url) filterObj.url = query.url;
+    if (query.actId) filterObj.actId = query.actId;
+    if (query.venueId) filterObj.venueId = query.venueId;
+    if (query.name) filterObj.name = query.name;
+    if (query.dateStart) filterObj.dateStart = query.dateStart;
+    if (query.timezone) filterObj.timezone = query.timezone;
+    if (query.locale) filterObj.locale = query.locale;
+    if (query.version) filterObj.version = query.version;
+    const queryObj: ShowQuery = {
+        filter: filterObj,
         populate: {
-            acts: params.shows ?? undefined,
-            venues: params.venues ?? undefined,
+            acts: query.shows,
+            venues: query.venues,
         },
-        size: params.size ?? undefined,
-        page: params.page ?? undefined
+        size: query.size,
+        page: query.page
     };
-    return searchParams;
+    return queryObj;
 }
 
 export const getMany = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     try {
-        const params: ShowSearchParams = mapToShowSearchParams(request.params);
-        const data: ShowDTO[] = await findShows(params);
+        const query: ShowQuery = mapToShowQuery(request.params);
+        const data: ShowDTO[] = await findShows(query);
         response.status(200).json({ data });
         next();
     } catch (err: any) {
@@ -39,12 +39,12 @@ export const getMany = async (request: Request, response: Response, next: NextFu
 
 export const getOne = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     try {
-        const params: ShowSearchParams = mapToShowSearchParams(request.query);
+        const query: ShowQuery = mapToShowQuery(request.query);
         const id: string = request.params.id;
         if (!id) throw new InvalidInputError("id");
         var data: ShowDTO = await findShow({ filter: { id }});
-        if (params.populate?.acts) data = await resolveActForShow(data);
-        if (params.populate?.venues) data = await resolveVenueForShow(data);
+        if (query.populate?.acts) data = await resolveActForShow(data);
+        if (query.populate?.venues) data = await resolveVenueForShow(data);
         response.status(200).json({ data });
         next();
     } catch (err: any) {

@@ -14,14 +14,16 @@ export interface Act {
     updatedAt: Date;
 }
 
-export interface ActSearchParams {
-    filter?: {
-        id?: string;
-        url?: string;
-        name?: string;
-        locale?: string;
-        version?: string;
-    }
+export interface ActFilter {
+    id?: string;
+    url?: string;
+    name?: string;
+    locale?: string;
+    version?: string;
+}
+
+export interface ActQuery {
+    filter: ActFilter;
     populate?: {
         shows?: boolean;
     }
