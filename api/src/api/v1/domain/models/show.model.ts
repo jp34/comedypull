@@ -20,34 +20,6 @@ export interface Show {
     updatedAt: Date;
 }
 
-export interface ShowFilter {
-    id?: string;
-    url?: string;
-    actId?: string;
-    venueId?: string;
-    name?: string;
-    dateStart?: Date;
-    timezone?: string;
-    locale?: string;
-    version?: string;
-}
-
-export interface ShowQuery {
-    filter?: ShowFilter;
-    paginate?: {
-        size?: number;
-        page?: number;
-    }
-    location?: {
-        latitude: number;
-        longitude: number;
-    }
-    populate?: {
-        acts?: boolean;
-        venues?: boolean;
-    }
-}
-
 const ShowSchema = new mongoose.Schema<Show>({
     id: { type: String, required: true, unique: true },
     url: { type: String, required: true },

@@ -1,14 +1,5 @@
 import { BulkWriteResult } from "mongodb";
-import { NonExistentResourceError, TMVenue, Venue, VenueDTO, VenueModel, VenueQuery } from "../domain";
-
-export const mapToVenue = (venue: TMVenue, version: string): Venue => {
-    return {
-        ...venue,
-        version,
-        createdAt: new Date(Date.now()),
-        updatedAt: new Date(Date.now())
-    }
-}
+import { NearbyFilter, NonExistentResourceError, Venue, VenueDTO, VenueModel, VenueQuery, buildNearbyFilter } from "../domain";
 
 export const upsertVenues = async (venues: Array<Venue>): Promise<BulkWriteResult> => {
     return await VenueModel.bulkWrite(venues.map((v: Venue) => ({
@@ -20,17 +11,20 @@ export const upsertVenues = async (venues: Array<Venue>): Promise<BulkWriteResul
     })));
 }
 
-export const findVenues = async (query: VenueQuery): Promise<Array<VenueDTO>> => {
+export const findManyVenues = async (query: VenueQuery): Promise<Array<VenueDTO>> => {
     const limit: number = query.paginate?.size ?? 10;
     const offset: number = (query.paginate?.page ?? 0) * limit;
-    return await VenueModel.find({ ...query.filter })
+    const nearbyFilter: NearbyFilter | any = (query.location)
+        ? buildNearbyFilter(query.location.longitude, query.location.latitude)
+        : {};
+    return await VenueModel.find({ ...query.filter, ...nearbyFilter })
         .limit(limit)
         .skip(offset)
         .select({ _id: 0, __v: 0 })
         .lean();
 }
 
-export const findVenue = async (query: VenueQuery): Promise<VenueDTO> => {
+export const findOneVenue = async (query: VenueQuery): Promise<VenueDTO> => {
     const venue: VenueDTO | null = await VenueModel
         .findOne({ ...query.filter })
         .select({ _id: 0, __v: 0 })

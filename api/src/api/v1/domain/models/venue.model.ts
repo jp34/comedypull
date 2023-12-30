@@ -17,29 +17,6 @@ export interface Venue {
     updatedAt: Date;
 }
 
-export interface VenueFilter {
-    id?: string;
-    url?: string;
-    name?: string;
-    locale?: string;
-    version?: string;
-}
-
-export interface VenueQuery {
-    filter?: VenueFilter;
-    paginate?: {
-        size?: number;
-        page?: number;
-    }
-    location?: {
-        latitude: number;
-        longitude: number;
-    }
-    populate?: {
-        shows?: boolean;
-    }
-}
-
 const VenueSchema = new mongoose.Schema<Venue>({
     id: { type: String, required: true, unique: true },
     url: { type: String, required: true },

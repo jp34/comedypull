@@ -15,26 +15,6 @@ export interface Act {
     updatedAt: Date;
 }
 
-export interface ActFilter {
-    id?: string;
-    url?: string;
-    name?: string;
-    relevance?: number;
-    locale?: string;
-    version?: string;
-}
-
-export interface ActQuery {
-    filter?: ActFilter;
-    paginate?: {
-        size?: number;
-        page?: number;
-    }
-    populate?: {
-        shows?: boolean;
-    }
-}
-
 const ActSchema = new mongoose.Schema<Act>({
     id: { type: String, required: true, unique: true },
     url: { type: String, required: true },

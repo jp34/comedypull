@@ -1,14 +1,14 @@
 import { BulkWriteResult } from "mongodb";
-import { TMShow, Show, ShowModel, ShowDTO, NonExistentResourceError, ShowQuery, ShowFilter } from "../domain";
-
-export const mapToShow = (show: TMShow, version: string): Show => {
-    return {
-        ...show,
-        version,
-        createdAt: new Date(Date.now()),
-        updatedAt: new Date(Date.now())
-    }
-}
+import {
+    Show,
+    ShowModel,
+    ShowDTO,
+    ShowFilter,
+    ShowQuery,
+    NearbyFilter,
+    buildNearbyFilter,
+    NonExistentResourceError
+} from "../domain";
 
 export const upsertShows = async (shows: Array<Show>): Promise<BulkWriteResult> => {
     return await ShowModel.bulkWrite(shows.map((s: Show) => ({
@@ -20,15 +20,21 @@ export const upsertShows = async (shows: Array<Show>): Promise<BulkWriteResult> 
     })));
 }
 
-export const findShows = async (filter: ShowFilter = {}, size: number = 10, page: number = 0): Promise<Array<ShowDTO>> => {
+export const findManyShows = async (query: ShowQuery): Promise<Array<ShowDTO>> => {
+    const limit: number = query.paginate?.size ?? 10;
+    const offset: number = (query.paginate?.page ?? 0) * limit;
+    const nearbyFilter: NearbyFilter | any = (query.location)
+        ? buildNearbyFilter(query.location.longitude, query.location.latitude)
+        : {};
+    const filter: any = { ...query.filter, ...nearbyFilter };
     return await ShowModel.find(filter)
-        .limit(size)
-        .skip((size * page))
+        .limit(limit)
+        .skip(offset)
         .select({ _id: 0, __v: 0 })
         .lean();
 }
 
-export const findShow = async (filter: ShowFilter): Promise<ShowDTO> => {
+export const findOneShow = async (filter: ShowFilter): Promise<ShowDTO> => {
     const show: ShowDTO | null = await ShowModel
         .findOne(filter)
         .select({ _id: 0, __v: 0 })

@@ -24,6 +24,10 @@ if (PORT === "undefined") throw new ConfigurationError("Missing environment vari
 const DB_STRING = process.env.DB_STRING ?? "undefined";
 if (DB_STRING === "undefined") throw new ConfigurationError("Missing environment variable: DB_STRING");
 
+// API_NEARBY_LIMIT
+const API_NEARBY_LIMIT = process.env.API_NEARBY_LIMIT ?? -1;
+if (API_NEARBY_LIMIT == -1) throw new Error("Missing environment variable: API_NEARBY_LIMIT");
+
 // ENGINE_RETRY_LIMIT
 const ENGINE_RETRY_LIMIT = process.env.ENGINE_RETRY_LIMIT ?? -1;
 if (ENGINE_RETRY_LIMIT == -1) throw new Error("Missing environment variable: ENGINE_RETRY_LIMIT");
@@ -59,6 +63,7 @@ const Env = {
     HOST,
     PORT,
     DB_STRING,
+    API_NEARBY_LIMIT: parseInt(API_NEARBY_LIMIT),
     ENGINE_RETRY_LIMIT: parseInt(ENGINE_RETRY_LIMIT),
     TM_API_KEY,
     TM_SUBGENRE_ID,

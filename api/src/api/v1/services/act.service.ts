@@ -1,15 +1,5 @@
 import { BulkWriteResult } from "mongodb";
-import { TMAct, Act, ActModel, ActDTO, NonExistentResourceError, ActQuery } from "../domain";
-
-export const mapToAct = (act: TMAct, relevance: number, version: string): Act => {
-    return {
-        ...act,
-        relevance,
-        version,
-        createdAt: new Date(Date.now()),
-        updatedAt: new Date(Date.now())
-    };
-}
+import { Act, ActModel, ActDTO, NonExistentResourceError, ActQuery } from "../domain";
 
 export const upsertActs = async (acts: Array<Act>): Promise<BulkWriteResult> => {
     return await ActModel.bulkWrite(acts.map((a: Act) => ({
@@ -21,7 +11,7 @@ export const upsertActs = async (acts: Array<Act>): Promise<BulkWriteResult> => 
     })));
 }
 
-export const findActs = async (query: ActQuery): Promise<Array<ActDTO>> => {
+export const findManyActs = async (query: ActQuery): Promise<Array<ActDTO>> => {
     const limit: number = query.paginate?.size ?? 10;
     const offset: number = (query.paginate?.page ?? 0) * limit;
     return await ActModel.find({ ...query.filter })
@@ -31,7 +21,7 @@ export const findActs = async (query: ActQuery): Promise<Array<ActDTO>> => {
         .lean();
 }
 
-export const findAct = async (query: ActQuery): Promise<ActDTO> => {
+export const findOneAct = async (query: ActQuery): Promise<ActDTO> => {
     const act: ActDTO | null = await ActModel
         .findOne({ ...query.filter })
         .select({ _id: 0, __v: 0 })

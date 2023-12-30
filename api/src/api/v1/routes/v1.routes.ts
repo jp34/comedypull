@@ -7,19 +7,19 @@ import {
 } from "../controllers";
 
 const ActRouter = Router()
-    .get("/", ActController.getMany)
-    .get("/:id", ActController.getOne);
+    .get("/", ActController.getManyActs)
+    .get("/:id", ActController.getOneAct);
 
 const ShowRouter = Router()
-    .get("/", ShowController.getMany)
-    .get("/:id", ShowController.getOne);
+    .get("/", ShowController.getManyShows)
+    .get("/:id", ShowController.getOneShow);
 
 const VenueRouter = Router()
-    .get("/", VenueController.getMany)
-    .get("/:id", VenueController.getOne);
+    .get("/", VenueController.getManyVenues)
+    .get("/:id", VenueController.getOneVenue);
 
 const EngineRouter = Router()
-    .post("/:command", EngineController.postCommand);
+    .post("/:command", EngineController.startProcess);
 
 export const V1Router = Router()
     .use("/a", ActRouter)

@@ -6,12 +6,15 @@ import {
     TMAct,
     TMShow,
     TMVenue,
-    ActDTO
+    ActDTO,
+    mapToAct,
+    mapToShow,
+    mapToVenue
 } from "../domain";
 import { fetchActs, fetchShowsByActId } from "./tm.service";
-import { upsertActs, mapToAct, findActs } from "./act.service";
-import { upsertVenues, mapToVenue } from "./venue.service";
-import { upsertShows, mapToShow } from "./show.service";
+import { upsertActs, findManyActs } from "./act.service";
+import { upsertVenues } from "./venue.service";
+import { upsertShows } from "./show.service";
 import { BulkWriteResult } from "mongodb";
 import { v4 } from "uuid";
 import { createUpdate, setUpdateStatus } from "./update.service";
@@ -36,7 +39,7 @@ export const updateDatabase = async (): Promise<void> => {
         updateResult.actCount = (actResult.modifiedCount + actResult.upsertedCount);    // Record result to result object
 
         // Fetch all the acts newly inserted into the database
-        const inserted: Array<ActDTO> = await findActs({
+        const inserted: Array<ActDTO> = await findManyActs({
             filter: {
                 version: updateId
             },
