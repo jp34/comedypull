@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { VenueDTO, VenueQuery, parseVenueQuery, InvalidInputError } from "../domain";
-import { findManyVenues, findOneVenue } from "../services";
-import { resolveShowsForVenue } from "../services/resolver.service";
+import { VenueDTO, VenueQuery, parseVenueQuery, InvalidInputError } from "../../../domain";
+import { findManyVenues, findOneVenue } from "../../../services";
+import { resolveShowsForVenue } from "../../../services";
 
 export const getManyVenues = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     try {

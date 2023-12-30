@@ -1,5 +1,5 @@
-import Env from "../../../config/env";
-import logger from "../../../config/logger";
+import Env from "../config/env";
+import logger from "../config/logger";
 import {
     Act,
     UpdateStatus,

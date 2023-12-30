@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { ActDTO, ActQuery, parseActQuery, InvalidInputError } from "../domain";
-import { findManyActs, findOneAct } from "../services/act.service";
-import { resolveShowsForAct } from "../services/resolver.service";
+import { ActDTO, ActQuery, parseActQuery, InvalidInputError } from "../../../domain";
+import { findManyActs, findOneAct } from "../../../services/act.service";
+import { resolveShowsForAct } from "../../../services";
 
 export const getManyActs = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     try {

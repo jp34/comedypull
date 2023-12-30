@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { ShowDTO, ShowQuery, parseShowQuery, InvalidInputError } from "../domain";
-import { findManyShows, findOneShow } from "../services";
-import { resolveActForShow, resolveVenueForShow } from "../services/resolver.service";
+import { ShowDTO, ShowQuery, parseShowQuery, InvalidInputError } from "../../../domain";
+import { findManyShows, findOneShow } from "../../../services";
+import { resolveActForShow, resolveVenueForShow } from "../../../services";
 
 export const getManyShows = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     try {

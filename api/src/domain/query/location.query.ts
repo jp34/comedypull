@@ -1,4 +1,4 @@
-import Env from "../../../../config/env";
+import Env from "../../config/env";
 
 export interface NearbyFilter {
     location: {
