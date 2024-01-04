@@ -1,13 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import "../css/ShowCard.css";
-import { ComedianStore } from "../store";
-import moment from "moment";
 import { BsCalendar, BsBookmark } from "react-icons/bs";
+import moment from "moment";
+import "./ShowCard.css";
 
-const ShowCard = ({ show }) => {
+export const ShowCard = ({ show }) => {
 
-    const comedian = ComedianStore.getState().actions.findComedianById(show.comedianId);
     const formattedDate = moment(show.date).format('MMM D - h:mm a');
 
     const [iconColor, setIconColor] = useState("#000000")
@@ -41,7 +39,7 @@ const ShowCard = ({ show }) => {
                         </div>
                     </div>
                     <div className="second">
-                        <p className="show-comedian">{comedian.name}</p>
+                        <p className="show-act">{show.actName}</p>
                         <p className="show-venue">{show.venueName}</p>
                     </div>
                 </div>
@@ -49,5 +47,3 @@ const ShowCard = ({ show }) => {
         </div>
     );
 }
-
-export default ShowCard;

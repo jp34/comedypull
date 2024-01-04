@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import "./css/App.css";
-import Wrapper from "./components/Wrapper";
-import Home from "./pages/Home";
-import GeoStore from "./store/GeoStore";
 import { useGeolocated } from "react-geolocated";
+import { Layout } from "components";
+import { Home } from "views";
+import GeoStore from "./store/GeoStore";
+import "./App.css";
 
 const App = () => {
     
@@ -29,7 +29,7 @@ const App = () => {
 		<div className="app">
 			<BrowserRouter>
 				<Routes>
-					<Route path="/" element={<Wrapper />}>
+					<Route path="/" element={<Layout />}>
 					    <Route index element={<Home />}/>
 					</Route>
 				</Routes>

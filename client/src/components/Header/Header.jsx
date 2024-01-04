@@ -1,7 +1,6 @@
-import { useState } from "react";
-import "../css/Header.css";
+import "./Header.css";
 
-const Header = () => {
+export const Header = () => {
 
     const renderLocationSelector = () => {
         return (
@@ -39,5 +38,3 @@ const Header = () => {
         </header>
     );
 }
-
-export default Header;
