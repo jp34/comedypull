@@ -25,6 +25,12 @@ const App = () => {
         console.log("Geolocation is not enabled");
     }
 
+    if (!GeoStore.getState().actions.ready()) return (
+        <>
+        <h1>Loading</h1>
+        </>
+    )
+
 	return (
 		<div className="app">
 			<BrowserRouter>

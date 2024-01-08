@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { DateTime } from "luxon";
 import { BsCalendar, BsBookmark } from "react-icons/bs";
-import moment from "moment";
 import "./ShowCard.css";
 
 export const ShowCard = ({ show }) => {
 
-    const formattedDate = moment(show.date).format('MMM D - h:mm a');
+    const formattedDate = DateTime.fromISO(show.date).setLocale("en-us").toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY);
 
     const [iconColor, setIconColor] = useState("#000000")
 

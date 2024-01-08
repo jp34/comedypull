@@ -5,10 +5,8 @@ import "./Home.css";
 export const Home = () => {
     
     return (
-        <div className="content">
-            <Gallery>
-                <NearbyShows />
-            </Gallery>
-        </div>
+        <Gallery>
+            <NearbyShows />
+        </Gallery>
     );
 }
