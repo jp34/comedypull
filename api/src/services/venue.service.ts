@@ -1,36 +1,36 @@
-import { BulkWriteResult } from "mongodb";
-import { NearbyFilter, NonExistentResourceError, Venue, VenueDTO, VenueModel, VenueQuery, buildNearbyFilter } from "../domain";
+import {
+    NearbyFilter,
+    NonExistentResourceError,
+    VenueResponse,
+    VenueDetailResponse,
+    VenueModel,
+    VenueQuery,
+    VenueResponseFieldMask,
+    buildNearbyFilter,
+    VenueDetailResponseFieldMask
+} from "../domain";
+import { findShows } from "./show.service";
 
-export const upsertVenues = async (venues: Array<Venue>): Promise<BulkWriteResult> => {
-    return await VenueModel.bulkWrite(venues.map((v: Venue) => ({
-        updateOne: {
-            filter: { id: v.id },
-            update: v,
-            upsert: true
-        }
-    })));
-}
-
-export const findManyVenues = async (query: VenueQuery): Promise<Array<VenueDTO>> => {
-    const limit: number = query.paginate?.size ?? 10;
-    const offset: number = (query.paginate?.page ?? 0) * limit;
+export const findVenues = async (query: VenueQuery): Promise<Array<VenueResponse>> => {
+    const limit: number = query.size ?? 10;
+    const offset: number = (query.page ?? 0) * limit;
     const nearbyFilter: NearbyFilter | any = (query.location)
         ? buildNearbyFilter(query.location.longitude, query.location.latitude)
         : {};
     return await VenueModel.find({ ...query.filter, ...nearbyFilter })
         .limit(limit)
         .skip(offset)
-        .select({ _id: 0, __v: 0 })
+        .select(VenueResponseFieldMask)
         .lean();
 }
 
-export const findOneVenue = async (query: VenueQuery): Promise<VenueDTO> => {
-    const venue: VenueDTO | null = await VenueModel
+export const findVenueDetails = async (query: VenueQuery): Promise<VenueDetailResponse> => {
+    const venue: VenueDetailResponse | null = await VenueModel
         .findOne({ ...query.filter })
-        .select({ _id: 0, __v: 0 })
+        .select(VenueDetailResponseFieldMask)
         .lean();
-    if (venue == undefined) throw new NonExistentResourceError(
-        `Resource does not exist - show:${JSON.stringify(query.filter)}`
-    );
+    if (venue == undefined)
+        throw new NonExistentResourceError(`Resource does not exist - show:${JSON.stringify(query.filter)}`);
+    venue.shows = await findShows({ filter: { venue: venue._id }});
     return venue;
 }

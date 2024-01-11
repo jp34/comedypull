@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import { Image, ImageSchema } from "./image.model";
 import { Location, LocationSchema } from "./geo.model";
 
@@ -7,10 +7,10 @@ import { Location, LocationSchema } from "./geo.model";
 export interface Show {
     id: string;
     url: string;
-    actId: string;
-    venueId: string;
+    act: Schema.Types.ObjectId;
+    venue: Schema.Types.ObjectId;
     name: string;
-    dateStart: Date;
+    date: Date;
     timezone: string;
     location: Location;
     images: Image[];
@@ -23,10 +23,18 @@ export interface Show {
 const ShowSchema = new mongoose.Schema<Show>({
     id: { type: String, required: true, unique: true },
     url: { type: String, required: true },
-    actId: { type: String, required: true },
-    venueId: { type: String, required: true },
+    act: {
+        type: Schema.Types.ObjectId,
+        ref: "Act",
+        required: true
+    },
+    venue: {
+        type: Schema.Types.ObjectId,
+        ref: "Venue",
+        required: true
+    },
     name: { type: String, required: true },
-    dateStart: { type: Date, required: true },
+    date: { type: Date, required: true },
     timezone: { type: String, required: true },
     location: {
         type: LocationSchema,

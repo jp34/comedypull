@@ -1,6 +1,4 @@
-import { Act } from "./act.model";
-import { Show } from "./show.model";
-import { Venue } from "./venue.model";
+import { Schema } from "mongoose";
 
 export interface TMImage {
     ratio: string;
@@ -28,7 +26,14 @@ export interface TMAddress {
     }
 }
 
-export interface TMVenue {
+export interface TM {
+    id: string;
+    url: string;
+    locale: string;
+    version?: string;
+}
+
+export interface TMVenue extends TM {
     id: string;
     url: string;
     name: string;
@@ -36,53 +41,29 @@ export interface TMVenue {
     address: TMAddress;
     images: TMImage[];
     locale: string;
+    version?: string;
 }
 
-export interface TMShow {
+export interface TMShow extends TM {
     id: string;
     url: string;
-    actId: string;
-    venueId: string;
+    act: string | Schema.Types.ObjectId;
+    venue: string | Schema.Types.ObjectId;
     name: string;
     dateStart: Date;
     timezone: string;
     location: TMLocation;
     images: TMImage[];
     locale: string;
+    version?: string;
 }
 
-export const mapToShow = (show: TMShow, version: string): Show => {
-    return {
-        ...show,
-        version,
-        createdAt: new Date(Date.now()),
-        updatedAt: new Date(Date.now())
-    }
-}
-
-export interface TMAct {
+export interface TMAct extends TM {
     id: string;
     url: string;
     name: string;
     images: TMImage[];
     locale: string;
-}
-
-export const mapToAct = (act: TMAct, relevance: number, version: string): Act => {
-    return {
-        ...act,
-        relevance,
-        version,
-        createdAt: new Date(Date.now()),
-        updatedAt: new Date(Date.now())
-    };
-}
-
-export const mapToVenue = (venue: TMVenue, version: string): Venue => {
-    return {
-        ...venue,
-        version,
-        createdAt: new Date(Date.now()),
-        updatedAt: new Date(Date.now())
-    }
+    relevance?: number;
+    version?: string;
 }

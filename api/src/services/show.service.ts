@@ -1,28 +1,20 @@
-import { BulkWriteResult } from "mongodb";
 import {
-    Show,
+    ShowResponse,
+    ShowDetailResponse,
     ShowModel,
-    ShowDTO,
-    ShowFilter,
     ShowQuery,
     NearbyFilter,
     buildNearbyFilter,
-    NonExistentResourceError
+    NonExistentResourceError,
+    ShowDetailResponseFieldMask,
+    ShowResponseFieldMask,
+    ActResponseFieldMask,
+    VenueResponseFieldMask
 } from "../domain";
 
-export const upsertShows = async (shows: Array<Show>): Promise<BulkWriteResult> => {
-    return await ShowModel.bulkWrite(shows.map((s: Show) => ({
-        updateOne: {
-            filter: { id: s.id },
-            update: s,
-            upsert: true
-        }
-    })));
-}
-
-export const findManyShows = async (query: ShowQuery): Promise<Array<ShowDTO>> => {
-    const limit: number = query.paginate?.size ?? 10;
-    const offset: number = (query.paginate?.page ?? 0) * limit;
+export const findShows = async (query: ShowQuery): Promise<Array<ShowResponse>> => {
+    const limit: number = query.size ?? 10;
+    const offset: number = (query.page ?? 0) * limit;
     const nearbyFilter: NearbyFilter | any = (query.location)
         ? buildNearbyFilter(query.location.longitude, query.location.latitude)
         : {};
@@ -30,17 +22,28 @@ export const findManyShows = async (query: ShowQuery): Promise<Array<ShowDTO>> =
     return await ShowModel.find(filter)
         .limit(limit)
         .skip(offset)
-        .select({ _id: 0, __v: 0 })
+        .select(ShowResponseFieldMask)
         .lean();
 }
 
-export const findOneShow = async (filter: ShowFilter): Promise<ShowDTO> => {
-    const show: ShowDTO | null = await ShowModel
-        .findOne(filter)
-        .select({ _id: 0, __v: 0 })
+export const findShowDetails = async (query: ShowQuery): Promise<ShowDetailResponse> => {
+    const show: ShowDetailResponse | null = await ShowModel
+        .findOne({ ...query.filter })
+        .select(ShowDetailResponseFieldMask)
+        .populate([
+            {
+                path: "act",
+                select: ActResponseFieldMask
+            },
+            {
+                path: "venue",
+                select: VenueResponseFieldMask
+            }
+        ])
         .lean();
-    if (show == undefined) throw new NonExistentResourceError(
-        `Resource does not exist - show:${JSON.stringify(filter)}`
-    );
+    if (show == undefined)
+        throw new NonExistentResourceError(
+            `Resource does not exist - show:${JSON.stringify(query)}`
+        );
     return show;
 }

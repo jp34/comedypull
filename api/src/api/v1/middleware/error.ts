@@ -4,7 +4,7 @@ import logger from "../../../config/logger";
 
 export const errorHandler = async (error: Error, request: Request, response: Response, next: NextFunction) => {
     if (error instanceof NonExistentResourceError) {
-        logger.warn("ConfigurationError", {
+        logger.warn("NonExistentResourceError", {
             cause: error.message,
             stack: error.stack
         });

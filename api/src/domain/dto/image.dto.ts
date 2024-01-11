@@ -1,7 +1,7 @@
 
-export interface ImageDTO {
-    ratio?: string;
-    url?: string;
-    width?: number;
-    height?: number;
+export type ImageResponse = {
+    ratio: string;
+    url: string;
+    width: number;
+    height: number;
 }

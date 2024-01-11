@@ -1,28 +1,31 @@
 import { Request, Response, NextFunction } from "express";
-import { ShowDTO, ShowQuery, parseShowQuery, InvalidInputError } from "../../../domain";
-import { findManyShows, findOneShow } from "../../../services";
-import { resolveActForShow, resolveVenueForShow } from "../../../services";
+import { findShows, findShowDetails } from "../../../services";
+import {
+    ShowQuery,
+    parseShowQuery,
+    ShowResponse,
+    ShowDetailResponse,
+    InvalidInputError
+} from "../../../domain";
 
-export const getManyShows = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+export const getShows = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     try {
         const query: ShowQuery = parseShowQuery(request.query);
-        const data: ShowDTO[] = await findManyShows(query);
-        response.status(200).json({ data });
+        const data: Array<ShowResponse> = await findShows(query);
+        response.status(200).json(data);
         next();
     } catch (err: any) {
         next(err);
     }
 }
 
-export const getOneShow = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+export const getShowDetails = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     try {
         const query: ShowQuery = parseShowQuery(request.query);
         const id: string = request.params.id;
         if (!id) throw new InvalidInputError("id");
-        var data: ShowDTO = await findOneShow({ id });
-        if (query.populate?.acts) data = await resolveActForShow(data);
-        if (query.populate?.venues) data = await resolveVenueForShow(data);
-        response.status(200).json({ data });
+        var data: ShowDetailResponse = await findShowDetails({ filter: { id }});
+        response.status(200).json(data);
         next();
     } catch (err: any) {
         next(err);
