@@ -1,24 +1,12 @@
-import { BulkWriteResult } from "mongodb";
 import {
-    Show,
     ShowModel,
     ShowDTO,
     ShowFilter,
     ShowQuery,
     NearbyFilter,
     buildNearbyFilter,
-    NonExistentResourceError
+    NonExistentResourceError,
 } from "../domain";
-
-export const upsertShows = async (shows: Array<Show>): Promise<BulkWriteResult> => {
-    return await ShowModel.bulkWrite(shows.map((s: Show) => ({
-        updateOne: {
-            filter: { id: s.id },
-            update: s,
-            upsert: true
-        }
-    })));
-}
 
 export const findManyShows = async (query: ShowQuery): Promise<Array<ShowDTO>> => {
     const limit: number = query.paginate?.size ?? 10;

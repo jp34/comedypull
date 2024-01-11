@@ -71,8 +71,8 @@ const parseShow = (obj: any): [TMShow, TMVenue] => {
     let show: TMShow = {
         id: obj.id,
         url: obj.url,
-        actId: obj._embedded.attractions[0].id,
-        venueId: venue.id,
+        act: obj._embedded.attractions[0].id,
+        venue: venue.id,
         name: obj.name,
         timezone: obj.dates.timezone,
         locale: obj.locale,

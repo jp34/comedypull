@@ -1,15 +1,9 @@
-import { BulkWriteResult } from "mongodb";
-import { Act, ActModel, ActDTO, NonExistentResourceError, ActQuery } from "../domain";
-
-export const upsertActs = async (acts: Array<Act>): Promise<BulkWriteResult> => {
-    return await ActModel.bulkWrite(acts.map((a: Act) => ({
-        updateOne: {
-            filter: { id: a.id },
-            update: a,
-            upsert: true
-        }
-    })));
-}
+import {
+    ActModel,
+    ActDTO,
+    NonExistentResourceError,
+    ActQuery
+} from "../domain";
 
 export const findManyActs = async (query: ActQuery): Promise<Array<ActDTO>> => {
     const limit: number = query.paginate?.size ?? 10;

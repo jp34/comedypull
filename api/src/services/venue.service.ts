@@ -1,15 +1,11 @@
-import { BulkWriteResult } from "mongodb";
-import { NearbyFilter, NonExistentResourceError, Venue, VenueDTO, VenueModel, VenueQuery, buildNearbyFilter } from "../domain";
-
-export const upsertVenues = async (venues: Array<Venue>): Promise<BulkWriteResult> => {
-    return await VenueModel.bulkWrite(venues.map((v: Venue) => ({
-        updateOne: {
-            filter: { id: v.id },
-            update: v,
-            upsert: true
-        }
-    })));
-}
+import {
+    NearbyFilter,
+    NonExistentResourceError,
+    VenueDTO,
+    VenueModel,
+    VenueQuery,
+    buildNearbyFilter
+} from "../domain";
 
 export const findManyVenues = async (query: VenueQuery): Promise<Array<VenueDTO>> => {
     const limit: number = query.paginate?.size ?? 10;
