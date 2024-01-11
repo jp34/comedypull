@@ -1,10 +1,10 @@
 
-export interface LocationDTO {
+export type LocationResponse = {
     latitude: number;
     longitude: number;
 }
 
-export interface AddressDTO {
+export type AddressResponse = {
     address: string;
     city: string;
     postCode: string;

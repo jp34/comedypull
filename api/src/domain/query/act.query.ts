@@ -1,5 +1,5 @@
 
-export interface ActFilter {
+export type ActFilter = {
     id?: string;
     url?: string;
     name?: string;
@@ -8,21 +8,15 @@ export interface ActFilter {
     version?: string;
 }
 
-export interface ActQuery {
+export type ActQuery = {
     filter?: ActFilter;
-    paginate?: {
-        size?: number;
-        page?: number;
-    }
-    populate?: {
-        shows?: boolean;
-    }
+    size?: number;
+    page?: number;
 }
 
 export const parseActFilter = (queryObj: any): ActFilter => {
     let filter: ActFilter = {};
     if (queryObj.id) filter.id = queryObj.id;
-    if (queryObj.url) filter.url = queryObj.url;
     if (queryObj.name) filter.name = queryObj.name;
     if (queryObj.relevance) filter.relevance = queryObj.relevance;
     if (queryObj.locale) filter.locale = queryObj.locale;
@@ -33,13 +27,8 @@ export const parseActFilter = (queryObj: any): ActFilter => {
 export const parseActQuery = (queryObj: any): ActQuery => {
     let query: ActQuery = {
         filter: parseActFilter(queryObj),
-        paginate: {
-            size: queryObj.size,
-            page: queryObj.page
-        },
-        populate: {
-            shows: (queryObj.shows === "true") ? true : false
-        }
+        size: queryObj.size,
+        page: queryObj.page
     };
     return query;
 }

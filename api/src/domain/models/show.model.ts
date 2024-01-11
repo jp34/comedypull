@@ -10,7 +10,7 @@ export interface Show {
     act: Schema.Types.ObjectId;
     venue: Schema.Types.ObjectId;
     name: string;
-    dateStart: Date;
+    date: Date;
     timezone: string;
     location: Location;
     images: Image[];
@@ -34,7 +34,7 @@ const ShowSchema = new mongoose.Schema<Show>({
         required: true
     },
     name: { type: String, required: true },
-    dateStart: { type: Date, required: true },
+    date: { type: Date, required: true },
     timezone: { type: String, required: true },
     location: {
         type: LocationSchema,

@@ -1,5 +1,5 @@
 
-export interface VenueFilter {
+export type VenueFilter = {
     id?: string;
     url?: string;
     name?: string;
@@ -7,25 +7,19 @@ export interface VenueFilter {
     version?: string;
 }
 
-export interface VenueQuery {
+export type VenueQuery = {
     filter?: VenueFilter;
-    paginate?: {
-        size?: number;
-        page?: number;
-    }
+    size?: number;
+    page?: number;
     location?: {
         latitude: number;
         longitude: number;
-    }
-    populate?: {
-        shows?: boolean;
     }
 }
 
 export const parseVenueFilter = (queryObj: any): VenueFilter => {
     let filter: VenueFilter = {};
     if (queryObj.id) filter.id = queryObj.id;
-    if (queryObj.url) filter.url = queryObj.url;
     if (queryObj.name) filter.name = queryObj.name;
     if (queryObj.locale) filter.locale = queryObj.locale;
     if (queryObj.version) filter.version = queryObj.version;
@@ -35,13 +29,8 @@ export const parseVenueFilter = (queryObj: any): VenueFilter => {
 export const parseVenueQuery = (queryObj: any): VenueQuery => {
     let query: VenueQuery = {
         filter: parseVenueFilter(queryObj),
-        paginate: {
-            size: queryObj.size,
-            page: queryObj.page
-        },
-        populate: {
-            shows: (queryObj.shows === "true") ? true : false
-        }
+        size: queryObj.size,
+        page: queryObj.page
     };
     if (queryObj.latitude && queryObj.longitude) query.location = {
         latitude: parseFloat(queryObj.latitude),

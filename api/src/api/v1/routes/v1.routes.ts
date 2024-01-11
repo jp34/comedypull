@@ -11,12 +11,12 @@ const ActRouter = Router()
     .get("/:id", ActController.getOneAct);
 
 const ShowRouter = Router()
-    .get("/", ShowController.getManyShows)
-    .get("/:id", ShowController.getOneShow);
+    .get("/", ShowController.getShows)
+    .get("/:id", ShowController.getShowDetails);
 
 const VenueRouter = Router()
-    .get("/", VenueController.getManyVenues)
-    .get("/:id", VenueController.getOneVenue);
+    .get("/", VenueController.getVenues)
+    .get("/:id", VenueController.getVenueDetails);
 
 const EngineRouter = Router()
     .post("/:command", EngineController.startProcess);
