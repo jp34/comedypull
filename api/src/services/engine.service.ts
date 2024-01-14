@@ -133,7 +133,7 @@ const updateDatabaseEntry = async (act: IDRef, version: string, config: EntryUpd
         // Apply show references to related act and venue
         shows.forEach((s: TMShow) => {
             // Lookup correct venue object id
-            const venueRef: IDRef | undefined = insertedVenues.find((ref: IDRef) => (s.venue = ref.id));
+            const venueRef: IDRef | undefined = insertedVenues.find((ref: IDRef) => (s.venue == ref.id));
             if (!venueRef) throw new Error(`Failed to map venue.id to venue._id for act:${act.id} and venue:${s.venue}`);
             // Replace s.venue with the venues object id
             s.venue = venueRef._id;
