@@ -34,13 +34,15 @@ export const ShowStore = create((set, get) => ({
                     size: n
                 });
                 axios.get(`http://20.42.93.82/api/v1/s?${params.toString()}`).then((data) => {
-                    console.log(data.data.data);
-                    if (data.status == 200) set({
-                        nearby: {
-                            date: DateTime.now().toISO(),
-                            shows: data.data.data
-                        }
-                    });
+                    if (data.status == 200) {
+                        console.log(data.data);
+                        set({
+                            nearby: {
+                                date: DateTime.now().toISO(),
+                                shows: data.data
+                            }
+                        });
+                    }
                 }).catch((err) => {
                     console.log("Unable to fetch nearby shows")
                 });
