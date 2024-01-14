@@ -23,6 +23,16 @@ export const findShows = async (query: ShowQuery): Promise<Array<ShowResponse>> 
         .limit(limit)
         .skip(offset)
         .select(ShowResponseFieldMask)
+        .populate([
+            {
+                path: "act",
+                select: ["id", "name"]
+            },
+            {
+                path: "venue",
+                select: ["id", "name"]
+            }
+        ])
         .lean();
 }
 
