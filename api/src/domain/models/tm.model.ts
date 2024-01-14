@@ -50,7 +50,7 @@ export interface TMShow extends TM {
     act: string | Schema.Types.ObjectId;
     venue: string | Schema.Types.ObjectId;
     name: string;
-    dateStart: Date;
+    date: Date;
     timezone: string;
     location: TMLocation;
     images: TMImage[];
