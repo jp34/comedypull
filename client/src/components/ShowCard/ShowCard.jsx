@@ -6,7 +6,17 @@ import "./ShowCard.css";
 
 export const ShowCard = ({ show }) => {
 
-    const formattedDate = DateTime.fromISO(show.date).setLocale("en-us").toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY);
+    // Create date string
+    const date = DateTime.fromISO(show.date).setLocale(show.locale).toLocaleParts(DateTime.DATETIME_MED);
+    const dateFormatted = `${date[0].value} ${date[2].value} - ${date[6].value}:${date[8].value} ${date[10].value.toLocaleLowerCase(show.locale)}`;
+
+    // Select image to display
+    const image = show.images.filter((i) => {
+        let split = i.url.split(/_/);
+        if (split[1] !== "RETINA") return false;
+        if (split[2] !== "PORTRAIT") return false;
+        return true;
+    })[0];
 
     const [iconColor, setIconColor] = useState("#000000")
 
@@ -15,20 +25,20 @@ export const ShowCard = ({ show }) => {
     }
     
     return (
-        <div className="show-card">
-            <Link className="show-link" to="/">
-                <div className="show-image-container" >
-                
+        <Link className="show-link" to="/">
+            <div className="show-card">
+                <div className="show-image">
+                    <img src={image.url} alt={show.act.name} />
                 </div>
                 <div className="show-details">
                     <div className="first">
-                        <div className="show-date-container">
+                        <div className="show-date">
                             <BsCalendar color="#000000" />
-                            <p className="show-date">{formattedDate}</p>
+                            <p className="show-date-str">{dateFormatted}</p>
                         </div>
-                        <div className="show-bookmark-container">
+                        <div className="show-bookmark">
                             <button
-                                className="show-bookmark"
+                                className="show-bookmark-button"
                                 type="button"
                                 onClick={handleClick}
                                 onMouseEnter={() => setIconColor("#2c2c2c")}
@@ -39,11 +49,11 @@ export const ShowCard = ({ show }) => {
                         </div>
                     </div>
                     <div className="second">
-                        <p className="show-act">{show.actName}</p>
-                        <p className="show-venue">{show.venueName}</p>
+                        <p className="show-act">{show.act.name}</p>
+                        <p className="show-venue">{show.venue.name}</p>
                     </div>
                 </div>
-            </Link>
-        </div>
+            </div>
+        </Link>
     );
 }

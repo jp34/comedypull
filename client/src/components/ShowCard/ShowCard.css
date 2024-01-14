@@ -1,21 +1,33 @@
 
+.show-link {
+    text-decoration: none;
+}
+
 .show-card {
     display: flex;
     flex-direction: column;
     border: 1px solid #d1d1d1;
     border-radius: 6px;
+    width: 310px;
+    height: 420px;
 }
 
-.show-link {
-    text-decoration: none;
+.show-image {
+    flex: 3;
+    display: flex;
+    overflow: hidden;
+    justify-content: center;
+    align-items: center;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
 }
 
-.show-image-container {
-    width: 300px;
-    height: 300px;
+.show-image > img {
+    height: 100%;
 }
 
 .show-details {
+    flex: 1;
     padding: 1em;
     border-top: 1px solid #d1d1d1;
     display: flex;
@@ -38,7 +50,7 @@
     justify-content: flex-end;
 }
 
-.show-date-container {
+.show-date {
     display: flex;
     flex: 2;
     flex-direction: row;
@@ -46,7 +58,7 @@
     gap: 0.5em;
 }
 
-.show-date {
+.show-date-str {
     margin: 0;
     font-family: 'Poppins', sans-serif;
     font-size: 13px;
@@ -54,14 +66,14 @@
     color: #1c1c1c;
 }
 
-.show-bookmark-container {
+.show-bookmark {
     display: flex;
     flex: 1;
     align-items: center;
     justify-content: flex-end;
 }
 
-.show-bookmark {
+.show-bookmark-button {
     border: transparent;
     background-color: transparent;
 }
@@ -83,5 +95,5 @@
     font-family: 'Poppins', sans-serif;
     font-size: 12px;
     font-weight: 400;
-    color: #4c4c4c;
+    color: #6c6c6c;
 }

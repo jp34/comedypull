@@ -9,6 +9,7 @@ const GeoStore = create((set, get) => ({
         
         setGeo: (latitude, longitude) => {
             set({ geo: { latitude, longitude }});
+            console.log(get().geo);
         },
 
         ready: () => {
