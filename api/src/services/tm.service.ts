@@ -76,7 +76,7 @@ const parseShow = (obj: any): [TMShow, TMVenue] => {
         name: obj.name,
         timezone: obj.dates.timezone,
         locale: obj.locale,
-        dateStart: obj.dates.start.dateTime,
+        date: obj.dates.start.dateTime,
         location: venue.location,
         images,
     }
