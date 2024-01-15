@@ -2,7 +2,6 @@ import Env from "../config/env";
 import logger from "../config/logger";
 import {
     UpdateStatus,
-    TM,
     TMAct,
     TMShow,
     TMVenue,
@@ -11,12 +10,17 @@ import {
     ShowModel
 } from "../domain";
 import { fetchActs, fetchShowsByActId } from "./tm.service";
-import { AnyBulkWriteOperation } from "mongodb";
+import { AnyBulkWriteOperation, BulkWriteResult } from "mongodb";
 import { v4 } from "uuid";
 
-interface IDRef {
+type IDRef = {
     _id: string;
     id: string;
+}
+
+type WriteResult = {
+    batch: string;
+    result: BulkWriteResult;
 }
 
 /**
@@ -26,8 +30,8 @@ interface IDRef {
  * @param docs Objects to map to write operations
  * @returns An array of write operations
  */
-const buildUpsertWriteOperations = (docs: Array<TM>): Array<AnyBulkWriteOperation> => {
-    return docs.map((d: TM) => ({
+const buildUpsertWriteOperations = (docs: Array<any>): Array<AnyBulkWriteOperation> => {
+    return docs.map((d: any) => ({
         updateOne: {
             filter: { id: d.id },
             update: d,
@@ -37,72 +41,63 @@ const buildUpsertWriteOperations = (docs: Array<TM>): Array<AnyBulkWriteOperatio
 }
 
 /**
- * Upserts and returns an array of TMAct objects. Will update or insert one Act entity for
+ * Bulk writes an array of TMShow objects with upsert. Will update or insert one Act entity for
  * each TMAct object. Applies a version id, and relevance rank to each object before upsert.
  * 
  * @param shows TMShow objects to upsert
  * @param version Version id to be applied to each object
- * @returns An array of IDRef objects (_id, id)
+ * @returns BulkWriteResult
  */
-const updateActs = async (acts: Array<TMAct>, version: string): Promise<Array<IDRef>> => {
+const bulkWriteActs = async (acts: Array<TMAct>, version: string): Promise<WriteResult> => {
+    // Generate batch id
+    const batch: string = v4();
     // Generate write operations and apply version id + relevance rank
     const writeOps: Array<AnyBulkWriteOperation> = buildUpsertWriteOperations(
-        acts.map((a: TMAct, index: number) => ({ ...a, version, relevance: (index + 1)}))
+        acts.map((a: TMAct, index: number) => ({ ...a, version, batch, relevance: (index + 1)}))
     );
     // Bulk write acts to database
-    await ActModel.bulkWrite(writeOps);
-    // Fetch IDRef's for newly inserted acts
-    return await ActModel.find({ version })
-        .select(['_id', 'id'])
-        .limit(writeOps.length)
-        .skip(0)
-        .lean();
+    const result: BulkWriteResult = await ActModel.bulkWrite(writeOps);
+    return { batch, result };
 }
 
 /**
- * Upserts and returns an array of TMVenue objects. Will update or insert one Venue entity for
+ * Bulk writes an array of TMShow objects with upsert. Will update or insert one Venue entity for
  * each TMVenue object. Applies a version id to each object before upsert.
  * 
  * @param venues TMVenue objects to upsert
  * @param version Version id to be applied to each object
- * @returns An array of IDRef objects (_id, id)
+ * @returns BulkWriteResult
  */
-const updateVenues = async (venues: Array<TMVenue>, version: string): Promise<Array<IDRef>> => {
+const bulkWriteVenues = async (venues: Array<TMVenue>, version: string): Promise<WriteResult> => {
+    // Generate batch id
+    const batch: string = v4();
     // Generate write operations and apply version id
     const writeOps: Array<AnyBulkWriteOperation> = buildUpsertWriteOperations(
-        venues.map((v: TMVenue) => ({ ...v, version }))
+        venues.map((v: TMVenue) => ({ ...v, version, batch }))
     );
     // Bulk write venues to databse
-    await VenueModel.bulkWrite(writeOps);
-    // Fetch IDRef's for newly inserted venues
-    return await VenueModel.find({ version })
-        .select(['_id', 'id'])
-        .limit(writeOps.length)
-        .skip(0)
-        .lean();
+    const result: BulkWriteResult = await VenueModel.bulkWrite(writeOps);
+    return { batch, result };
 }
 
 /**
- * Upserts and returns an array of TMShow objects. Will update or insert one Show entity for
+ * Bulk writes an array of TMShow objects with upsert. Will update or insert one Show entity for
  * each TMShow object. Applies a version id to each object before upsert.
  * 
  * @param shows TMShow objects to upsert
  * @param version Version id to be applied to each object
- * @returns An array of IDRef objects (_id, id)
+ * @returns BulkWriteResult
  */
-const updateShows = async (shows: Array<TMShow>, version: string): Promise<Array<IDRef>> => {
+const bulkWriteShows = async (shows: Array<TMShow>, version: string): Promise<WriteResult> => {
+    // Generate batch id
+    const batch: string = v4();
     // Generate write operations and apply version id
     const writeOps: Array<AnyBulkWriteOperation> = buildUpsertWriteOperations(
-        shows.map((s: TMShow) => ({ ...s, version }))
+        shows.map((s: TMShow) => ({ ...s, version, batch }))
     );
     // Bulk write shows to databse
-    await ShowModel.bulkWrite(writeOps);
-    // Fetch IDRef's for newly inserted shows
-    return await ShowModel.find({ version })
-        .select(['_id', 'id'])
-        .limit(writeOps.length)
-        .skip(0)
-        .lean();
+    const result: BulkWriteResult = await ShowModel.bulkWrite(writeOps);
+    return { batch, result };
 }
 
 type EntryUpdateConfig = {
@@ -128,24 +123,29 @@ const updateDatabaseEntry = async (act: IDRef, version: string, config: EntryUpd
         const venues: Array<TMVenue> = pairs.map((p: [TMShow, TMVenue]) => p[1]);
 
         // Insert venues into database
-        const insertedVenues: Array<IDRef> = await updateVenues(venues, version);
+        const venueResult: WriteResult = await bulkWriteVenues(venues, version);
+        const venueBatch: Array<IDRef> = await VenueModel
+            .find({ batch: venueResult.batch }, { _id: 1, id: 1 })
+            .limit(100)
+            .skip(0)
+            .lean();
 
         // Apply show references to related act and venue
         shows.forEach((s: TMShow) => {
             // Lookup correct venue object id
-            const venueRef: IDRef | undefined = insertedVenues.find((ref: IDRef) => (s.venue == ref.id));
-            if (!venueRef) throw new Error(`Failed to map venue.id to venue._id for act:${act.id} and venue:${s.venue}`);
+            const venueRef: IDRef | undefined = venueBatch.find((v: IDRef) => (s.venue === v.id));
+            if (!venueRef) logger.warn(`Failed to lookup venue:${s.venue} for show:${s.id}`);
             // Replace s.venue with the venues object id
-            s.venue = venueRef._id;
+            else s.venue = venueRef._id;
             // Replace s.act with the acts object id
             s.act = act._id;
         });
 
         // Insert shows into database
-        const insertedShows: Array<IDRef> = await updateShows(shows, version);
+        const showResult: WriteResult = await bulkWriteShows(shows, version);
 
-        result.venueCount = insertedVenues.length;
-        result.showCount = insertedShows.length;
+        result.venueCount = (venueResult.result.modifiedCount + venueResult.result.insertedCount);
+        result.showCount = (showResult.result.modifiedCount + showResult.result.insertedCount);
         result.status = UpdateStatus.DONE;
         logger.info(`Inserted data for act:${act.id}`, { act, version });
     } catch (err: any) {
@@ -204,10 +204,15 @@ export const updateDatabase = async (): Promise<void> => {
     try {
         // Fetch top acts from Ticketmaster
         const tmActs: Array<TMAct> = await fetchActs(Env.TM_ACT_LIMIT, 0);
-        const insertedActs: Array<IDRef> = await updateActs(tmActs, version);
-        
+        const actResult: WriteResult = await bulkWriteActs(tmActs, version);
+        const actBatch: Array<IDRef> = await ActModel
+            .find({ batch: actResult.batch }, { _id: 1, id: 1 })
+            .limit(100)
+            .skip(0)
+            .lean();
+
             // For each newly inserted act, fetch and update shows + venues
-        insertedActs.forEach(async (a: IDRef, index: number) => {
+            actBatch.forEach(async (a: IDRef, index: number) => {
 
             // Update shows and venues
             const result: EntryUpdateResult = await updateDatabaseEntry(a, version, {
@@ -219,7 +224,7 @@ export const updateDatabase = async (): Promise<void> => {
             if (result.status !== UpdateStatus.DONE)
                 logger.warn(`Failed to insert data for act:${a.id} after ${result.attempts} attempts`);
             // Check if process is done
-            if (index == insertedActs.length - 1) {
+            if (index == actBatch.length - 1) {
                 logger.info(`Database update finished`);
             }
         });
