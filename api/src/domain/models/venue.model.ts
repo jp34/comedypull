@@ -13,6 +13,7 @@ export interface Venue {
     images: Image[];
     locale: string;
     version: string;
+    batch: string;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -34,6 +35,7 @@ const VenueSchema = new mongoose.Schema<Venue>({
     },
     locale: { type: String, required: true },
     version: { type: String, required: true },
+    batch: { type: String, required: true },
     createdAt: { type: Date },
     updatedAt: { type: Date }
 }, { timestamps: true });

@@ -16,6 +16,7 @@ export interface Show {
     images: Image[];
     locale: string;
     version: string;
+    batch: string;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -45,6 +46,7 @@ const ShowSchema = new mongoose.Schema<Show>({
     },
     locale: { type: String, required: true },
     version: { type: String, required: true },
+    batch: { type: String, required: true },
     createdAt: { type: Date },
     updatedAt: { type: Date }
 }, { timestamps: true });

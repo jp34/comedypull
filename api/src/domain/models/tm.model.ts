@@ -26,14 +26,7 @@ export interface TMAddress {
     }
 }
 
-export interface TM {
-    id: string;
-    url: string;
-    locale: string;
-    version?: string;
-}
-
-export interface TMVenue extends TM {
+export type TMVenue = {
     id: string;
     url: string;
     name: string;
@@ -42,9 +35,10 @@ export interface TMVenue extends TM {
     images: TMImage[];
     locale: string;
     version?: string;
+    batch?: string;
 }
 
-export interface TMShow extends TM {
+export type TMShow = {
     id: string;
     url: string;
     act: string | Schema.Types.ObjectId;
@@ -56,9 +50,10 @@ export interface TMShow extends TM {
     images: TMImage[];
     locale: string;
     version?: string;
+    batch?: string;
 }
 
-export interface TMAct extends TM {
+export type TMAct = {
     id: string;
     url: string;
     name: string;
@@ -66,4 +61,5 @@ export interface TMAct extends TM {
     locale: string;
     relevance?: number;
     version?: string;
+    batch?: string;
 }
