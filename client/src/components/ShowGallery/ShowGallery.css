@@ -1,6 +1,21 @@
 
 .show-gallery {
-    padding: 2em;
+    padding: 0 2em 2em 2em;
+    border: 1px solid red;    
+}
+
+.show-gallery-head {
+    padding: 1em 1em 1em 0;
+}
+
+.show-gallery-head > h3 {
+    margin: 0;
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 600;
+    font-size: 20;
+}
+
+.show-gallery-content {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;

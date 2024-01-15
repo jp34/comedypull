@@ -8,11 +8,11 @@ export const NearbyShows = () => {
     const shows = ShowStore((state) => state.nearby.shows);
 
     useEffect(() => {
-        ShowStore.getState().actions.fetchNearby();
+        ShowStore.getState().actions.fetchNearby(4);
     }, [shows]);
 
     return (
-        <ShowGallery>
+        <ShowGallery title="Shows near you">
             {shows.map((s) => {
                 return (
                     <ShowCard
