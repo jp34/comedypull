@@ -1,24 +1,8 @@
 import mongoose from "mongoose";
-import { Image, ImageSchema } from "./image.model";
-import { Location, LocationSchema, Address, AddressSchema } from "./geo.model";
+import { ImageSchema } from "../image";
+import { LocationSchema, AddressSchema } from "../geo";
 
-// -- Venue Model - Defines a single venue hosting a comedy event
-
-export interface Venue {
-    id: string;
-    url: string;
-    name: string;
-    location: Location;
-    address: Address;
-    images: Image[];
-    locale: string;
-    version: string;
-    batch: string;
-    createdAt: Date;
-    updatedAt: Date;
-}
-
-const VenueSchema = new mongoose.Schema<Venue>({
+const VenueSchema = new mongoose.Schema({
     id: { type: String, required: true, unique: true },
     url: { type: String, required: true },
     name: { type: String, sparse: true },
@@ -42,4 +26,4 @@ const VenueSchema = new mongoose.Schema<Venue>({
 
 VenueSchema.index({ location: "2dsphere" });
 
-export const VenueModel = mongoose.model<Venue>("Venue", VenueSchema);
+export const VenueModel = mongoose.model("Venue", VenueSchema);

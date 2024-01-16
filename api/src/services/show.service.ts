@@ -1,59 +1,27 @@
+import logger from "../config/logger";
 import {
+    ShowDAO,
+    ShowQuery,
     ShowResponse,
     ShowDetailResponse,
-    ShowModel,
-    ShowQuery,
-    NearbyFilter,
-    buildNearbyFilter,
-    NonExistentResourceError,
-    ShowDetailResponseFieldMask,
-    ShowResponseFieldMask,
-    ActResponseFieldMask,
-    VenueResponseFieldMask
-} from "../domain";
+    NonExistentResourceError
+} from "../models";
 
-export const findShows = async (query: ShowQuery): Promise<Array<ShowResponse>> => {
-    const limit: number = query.size ?? 10;
-    const offset: number = (query.page ?? 0) * limit;
-    const nearbyFilter: NearbyFilter | any = (query.location)
-        ? buildNearbyFilter(query.location.longitude, query.location.latitude)
-        : {};
-    const filter: any = { ...query.filter, ...nearbyFilter };
-    return await ShowModel.find(filter)
-        .limit(limit)
-        .skip(offset)
-        .select(ShowResponseFieldMask)
-        .populate([
-            {
-                path: "act",
-                select: ["id", "name"]
-            },
-            {
-                path: "venue",
-                select: ["id", "name"]
-            }
-        ])
-        .lean();
-}
+export class ShowService {
 
-export const findShowDetails = async (query: ShowQuery): Promise<ShowDetailResponse> => {
-    const show: ShowDetailResponse | null = await ShowModel
-        .findOne({ ...query.filter })
-        .select(ShowDetailResponseFieldMask)
-        .populate([
-            {
-                path: "act",
-                select: ActResponseFieldMask
-            },
-            {
-                path: "venue",
-                select: VenueResponseFieldMask
-            }
-        ])
-        .lean();
-    if (show == undefined)
-        throw new NonExistentResourceError(
+    static async findMany(query: ShowQuery): Promise<Array<ShowResponse>> {
+        const data: Array<ShowResponse> = await ShowDAO.findMany(query);
+        // Do logging, validation, and mapping here
+        logger.debug(data);
+        return data;
+    }
+
+    static async findOne(query: ShowQuery): Promise<ShowDetailResponse> {
+        const data: ShowDetailResponse | null = await ShowDAO.findOne(query);
+        if (!data) throw new NonExistentResourceError(
             `Resource does not exist - show:${JSON.stringify(query)}`
         );
-    return show;
+        // Do logging, validation, and mapping here
+        return data;
+    }
 }

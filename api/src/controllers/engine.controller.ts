@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { updateDatabase } from "../../../services";
+import { updateDatabase } from "../services";
 
 export const startProcess = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     try {

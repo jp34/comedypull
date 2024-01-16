@@ -1,16 +1,6 @@
-import { AddressResponse, LocationResponse } from "./geo.dto";
-import { ImageResponse } from "./image.dto";
-import { ShowResponse } from "./show.dto";
-
-export const VenueResponseFieldMask = [
-    "_id",
-    "id",
-    "url",
-    "name",
-    "address",
-    "locale",
-    "images"
-];
+import { AddressResponse, LocationResponse } from "../geo";
+import { ImageResponse } from "../image";
+import { ShowResponse } from "../show";
 
 export type VenueResponse = {
     _id: string;
@@ -22,12 +12,11 @@ export type VenueResponse = {
     images: Array<ImageResponse>;
 }
 
-export const VenueDetailResponseFieldMask = [
+export const VenueResponseFieldProjection = [
     "_id",
     "id",
     "url",
     "name",
-    "location",
     "address",
     "locale",
     "images"
@@ -44,3 +33,14 @@ export type VenueDetailResponse = {
     shows: Array<ShowResponse>;
     images: Array<ImageResponse>;
 }
+
+export const VenueDetailResponseFieldProjection = [
+    "_id",
+    "id",
+    "url",
+    "name",
+    "location",
+    "address",
+    "locale",
+    "images"
+];

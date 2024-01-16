@@ -1,6 +1,6 @@
 import Env from "../config/env";
 import logger from "../config/logger";
-import { TMAct, TMImage, TMShow, TMVenue, TMAddress, TMLocation } from "../domain";
+import { TMAct, TMImage, TMShow, TMVenue, TMAddress, TMLocation } from "../models";
 import axios, { AxiosResponse } from "axios";
 import axiosRateLimit from "axios-rate-limit";
 
@@ -71,8 +71,8 @@ const parseShow = (obj: any): [TMShow, TMVenue] => {
     let show: TMShow = {
         id: obj.id,
         url: obj.url,
-        act: obj._embedded.attractions[0].id,
-        venue: venue.id,
+        actId: obj._embedded.attractions[0].id,
+        venueId: venue.id,
         name: obj.name,
         timezone: obj.dates.timezone,
         locale: obj.locale,

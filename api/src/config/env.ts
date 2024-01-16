@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
-import { ConfigurationError } from "../domain";
+import { ConfigurationError } from "../models";
 
 // DEBUG : Run in debug mode
 const DEBUG = process.env.DEBUG ?? "undefined";

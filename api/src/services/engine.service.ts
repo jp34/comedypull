@@ -8,8 +8,8 @@ import {
     ActModel,
     VenueModel,
     ShowModel
-} from "../domain";
-import { fetchActs, fetchShowsByActId } from "./tm.service";
+} from "../models";
+import { fetchActs, fetchShowsByActId } from "../clients/ticketmaster.client";
 import { AnyBulkWriteOperation, BulkWriteResult } from "mongodb";
 import { v4 } from "uuid";
 
@@ -133,12 +133,12 @@ const updateDatabaseEntry = async (act: IDRef, version: string, config: EntryUpd
         // Apply show references to related act and venue
         shows.forEach((s: TMShow) => {
             // Lookup correct venue object id
-            const venueRef: IDRef | undefined = venueBatch.find((v: IDRef) => (s.venue === v.id));
-            if (!venueRef) logger.warn(`Failed to lookup venue:${s.venue} for show:${s.id}`);
-            // Replace s.venue with the venues object id
-            else s.venue = venueRef._id;
-            // Replace s.act with the acts object id
-            s.act = act._id;
+            const venueRef: IDRef | undefined = venueBatch.find((v: IDRef) => (s.venueId === v.id));
+            if (!venueRef) logger.warn(`Failed to lookup venue:${s.venueId} for show:${s.id}`);
+            // Replace s.venueId with the venues object id
+            else s.venueId = venueRef._id;
+            // Replace s.actId with the acts object id
+            s.actId = act._id;
         });
 
         // Insert shows into database
