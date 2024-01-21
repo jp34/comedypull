@@ -8,6 +8,15 @@ import {
     InvalidInputError
 } from "../models";
 
+/**
+ * GET /
+ * 
+ * Sends a JSON response of many venues that matched the request query.
+ * 
+ * @param request Express Request
+ * @param response Express Response
+ * @param next Next middleware function
+ */
 export const getVenues = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     try {
         const query: VenueQuery = parseVenueQuery(request.params);
@@ -19,6 +28,16 @@ export const getVenues = async (request: Request, response: Response, next: Next
     }
 }
 
+/**
+ * GET /:id
+ * 
+ * Sends a detailed JSON response of the requested venue. If no venue can be found
+ * with the provided id, this will return a NonExistentResourceError.
+ * 
+ * @param request Express Request 
+ * @param response Express Response
+ * @param next Next middleware function
+ */
 export const getVenueDetails = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     try {
         const params: VenueQuery = parseVenueQuery(request.query);

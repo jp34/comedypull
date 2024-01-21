@@ -8,6 +8,15 @@ import {
     InvalidInputError
 } from "../models";
 
+/**
+ * GET /
+ * 
+ * Sends a JSON response of many shows that matched the request query.
+ * 
+ * @param request Express Request
+ * @param response Express Response
+ * @param next Next middleware function
+ */
 export const getShows = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     try {
         const query: ShowQuery = parseShowQuery(request.query);
@@ -19,6 +28,16 @@ export const getShows = async (request: Request, response: Response, next: NextF
     }
 }
 
+/**
+ * GET /:id
+ * 
+ * Sends a detailed JSON response of the requested show. If no show can be found
+ * with the provided id, this will return a NonExistentResourceError.
+ * 
+ * @param request Express Request 
+ * @param response Express Response
+ * @param next Next middleware function
+ */
 export const getShowDetails = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     try {
         const query: ShowQuery = parseShowQuery(request.query);
