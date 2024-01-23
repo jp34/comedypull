@@ -5,7 +5,6 @@ import {
     ActDetailResponse,
     NonExistentResourceError
 } from "../models";
-import { ShowService } from "./show.service";
 
 /**
  * Defines various static methods that implement business and CRUD operations
@@ -40,7 +39,6 @@ export class ActService {
         if (!data) throw new NonExistentResourceError(
             `Resource does not exist - act:${JSON.stringify(query)}`
         );
-        data.shows = await ShowService.findMany({ filter: { act: data._id }});
         // Do logging, validation, and mapping here
         return data;
     }

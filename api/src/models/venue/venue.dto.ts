@@ -1,26 +1,16 @@
 import { AddressResponse, LocationResponse } from "../geo";
 import { ImageResponse } from "../image";
-import { ShowResponse } from "../show";
+import { EmbeddedShowResponseFieldProjection, ShowResponse } from "../show";
 
 export type VenueResponse = {
     _id: string;
     id: string;
     url: string;
     name: string;
-    address: AddressResponse;
+    location: LocationResponse;
     locale: string;
     images: Array<ImageResponse>;
 }
-
-export const VenueResponseFieldProjection = [
-    "_id",
-    "id",
-    "url",
-    "name",
-    "address",
-    "locale",
-    "images"
-];
 
 export type VenueDetailResponse = {
     _id: string;
@@ -34,13 +24,31 @@ export type VenueDetailResponse = {
     images: Array<ImageResponse>;
 }
 
-export const VenueDetailResponseFieldProjection = [
-    "_id",
-    "id",
-    "url",
-    "name",
-    "location",
-    "address",
-    "locale",
-    "images"
-];
+export const VenueResponseFieldProjection = {
+    _id: 1,
+    id: 1,
+    url: 1,
+    name: 1,
+    location: 1,
+    locale: 1
+};
+
+export const VenueDetailResponseFieldProjection = {
+    _id: 1,
+    id: 1,
+    url: 1,
+    name: 1,
+    location: 1,
+    address: 1,
+    locale: 1,
+    shows: {
+        _id: 1,
+        id: 1,
+        url: 1,
+        name: 1,
+        date: 1,
+        timezone: 1,
+        locale: 1,
+        location: 1,
+    },
+};

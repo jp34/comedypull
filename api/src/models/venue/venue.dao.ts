@@ -2,12 +2,11 @@ import { VenueModel } from "./venue.model";
 import { VenueQuery } from "./venue.query";
 import { NearbyFilter, buildNearbyFilter } from "../geo";
 import {
-    VenueDetailResponse,
-    VenueDetailResponseFieldProjection,
     VenueResponse,
-    VenueResponseFieldProjection
+    VenueDetailResponse,
+    VenueResponseFieldProjection,
+    VenueDetailResponseFieldProjection
 } from "./venue.dto";
-
 
 export class VenueDAO {
 
@@ -17,17 +16,31 @@ export class VenueDAO {
         const nearbyFilter: NearbyFilter | any = (query.location)
             ? buildNearbyFilter(query.location.longitude, query.location.latitude)
             : {};
-        return await VenueModel.find({ ...query.filter, ...nearbyFilter })
-            .limit(limit)
-            .skip(offset)
-            .select(VenueResponseFieldProjection)
-            .lean();
+        return await VenueModel.aggregate([
+            { $match: { ...query.filter, ...nearbyFilter }},
+            { $limit: limit },
+            { $skip: offset },
+            { $project: {
+                ...VenueResponseFieldProjection,
+                images: 1
+            }}
+        ]);
     }
 
     static async findOne(query: VenueQuery): Promise<VenueDetailResponse | null> {
-        return await VenueModel
-            .findOne({ ...query.filter })
-            .select(VenueDetailResponseFieldProjection)
-            .lean();
+        return (await VenueModel.aggregate([
+            { $match: { ...query.filter }},
+            { $limit: 1 },
+            { $lookup: {
+                from: "shows",
+                localField: "_id",
+                foreignField: "venueId",
+                as: "shows"
+            }},
+            { $project: {
+                ...VenueDetailResponseFieldProjection,
+                images: 1
+            }}
+        ]))[0];
     }
 }

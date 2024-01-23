@@ -1,5 +1,5 @@
 import { ImageResponse } from "../image";
-import { ShowResponse } from "../show";
+import { EmbeddedShowResponseFieldProjection, ShowResponse } from "../show";
 
 export type ActResponse = {
     _id: string;
@@ -9,15 +9,6 @@ export type ActResponse = {
     locale: string;
     images: Array<ImageResponse>;
 }
-
-export const ActResponseFieldProjection = [
-    "_id",
-    "id",
-    "url",
-    "name",
-    "locale",
-    "images"
-];
 
 export type ActDetailResponse = {
     _id: string;
@@ -30,12 +21,20 @@ export type ActDetailResponse = {
     images: Array<ImageResponse>;
 }
 
-export const ActDetailResponseFieldProjection = [
-    "_id",
-    "id",
-    "url",
-    "name",
-    "relevance",
-    "locale",
-    "images"
-];
+export const ActResponseFieldProjection = {
+    _id: 1,
+    id: 1,
+    url: 1,
+    name: 1,
+    locale: 1,
+};
+
+export const ActDetailResponseFieldProjection = {
+    _id: 1,
+    id: 1,
+    url: 1,
+    name: 1,
+    relevance: 1,
+    locale: 1,
+    shows: EmbeddedShowResponseFieldProjection
+};

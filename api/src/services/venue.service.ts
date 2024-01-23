@@ -5,7 +5,6 @@ import {
     VenueDetailResponse,
     NonExistentResourceError,
 } from "../models";
-import { ShowService } from "./show.service";
 
 /**
  * Defines various static methods that implement business and CRUD operations
@@ -40,7 +39,6 @@ export class VenueService {
         if (!data) throw new NonExistentResourceError(
             `Resource does not exist - show:${JSON.stringify(query.filter)}`
         );
-        data.shows = await ShowService.findMany({ filter: { venue: data._id }});
         // Do logging, validation, and mapping here
         return data;
     }
