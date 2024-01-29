@@ -1,6 +1,8 @@
 import dotenv from "dotenv";
 dotenv.config();
-import { ConfigurationError } from "../domain";
+// Below must import directly from ../models/error.model and not ../models
+// Otherwise ../models will be loaded before env
+import { ConfigurationError } from "../models/error.model";
 
 // DEBUG : Run in debug mode
 const DEBUG = process.env.DEBUG ?? "undefined";

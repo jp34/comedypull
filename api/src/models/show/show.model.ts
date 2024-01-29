@@ -1,35 +1,16 @@
 import mongoose, { Schema } from "mongoose";
-import { Image, ImageSchema } from "./image.model";
-import { Location, LocationSchema } from "./geo.model";
+import { ImageSchema } from "../image";
+import { LocationSchema } from "../geo";
 
-// -- Show Model - Defines a single comedy event
-
-export interface Show {
-    id: string;
-    url: string;
-    act: Schema.Types.ObjectId;
-    venue: Schema.Types.ObjectId;
-    name: string;
-    date: Date;
-    timezone: string;
-    location: Location;
-    images: Image[];
-    locale: string;
-    version: string;
-    batch: string;
-    createdAt: Date;
-    updatedAt: Date;
-}
-
-const ShowSchema = new mongoose.Schema<Show>({
+const ShowSchema = new mongoose.Schema({
     id: { type: String, required: true, unique: true },
     url: { type: String, required: true },
-    act: {
+    actId: {
         type: Schema.Types.ObjectId,
         ref: "Act",
         required: true
     },
-    venue: {
+    venueId: {
         type: Schema.Types.ObjectId,
         ref: "Venue",
         required: true
@@ -53,4 +34,4 @@ const ShowSchema = new mongoose.Schema<Show>({
 
 ShowSchema.index({ location: "2dsphere" });
 
-export const ShowModel = mongoose.model<Show>("Show", ShowSchema);
+export const ShowModel = mongoose.model("Show", ShowSchema);

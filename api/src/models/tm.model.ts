@@ -41,8 +41,8 @@ export type TMVenue = {
 export type TMShow = {
     id: string;
     url: string;
-    act: string | Schema.Types.ObjectId;
-    venue: string | Schema.Types.ObjectId;
+    actId: string | Schema.Types.ObjectId;
+    venueId: string | Schema.Types.ObjectId;
     name: string;
     date: Date;
     timezone: string;

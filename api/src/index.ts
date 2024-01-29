@@ -1,7 +1,7 @@
 import Env from "./config/env";
 import { connect } from "./config/db";
-import { V1Router } from "./api/v1/routes";
-import { errorHandler } from "./api/v1/middleware/error";
+import { V1Router } from "./routes";
+import { errorHandler } from "./middleware/error";
 import logger from "./config/logger";
 import express from "express";
 import bodyParser from "body-parser";

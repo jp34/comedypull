@@ -1,36 +1,45 @@
 import {
-    NearbyFilter,
-    NonExistentResourceError,
+    VenueDAO,
+    VenueQuery,
     VenueResponse,
     VenueDetailResponse,
-    VenueModel,
-    VenueQuery,
-    VenueResponseFieldMask,
-    buildNearbyFilter,
-    VenueDetailResponseFieldMask
-} from "../domain";
-import { findShows } from "./show.service";
+    NonExistentResourceError,
+} from "../models";
 
-export const findVenues = async (query: VenueQuery): Promise<Array<VenueResponse>> => {
-    const limit: number = query.size ?? 10;
-    const offset: number = (query.page ?? 0) * limit;
-    const nearbyFilter: NearbyFilter | any = (query.location)
-        ? buildNearbyFilter(query.location.longitude, query.location.latitude)
-        : {};
-    return await VenueModel.find({ ...query.filter, ...nearbyFilter })
-        .limit(limit)
-        .skip(offset)
-        .select(VenueResponseFieldMask)
-        .lean();
-}
+/**
+ * Defines various static methods that implement business and CRUD operations
+ * related to the Venue entity.
+ */
+export class VenueService {
 
-export const findVenueDetails = async (query: VenueQuery): Promise<VenueDetailResponse> => {
-    const venue: VenueDetailResponse | null = await VenueModel
-        .findOne({ ...query.filter })
-        .select(VenueDetailResponseFieldMask)
-        .lean();
-    if (venue == undefined)
-        throw new NonExistentResourceError(`Resource does not exist - show:${JSON.stringify(query.filter)}`);
-    venue.shows = await findShows({ filter: { venue: venue._id }});
-    return venue;
+    /**
+     * Returns an array of Venues matching the provided query. Objects are mapped
+     * to type VenueResponse. Should perform various validation, cleansing, and security
+     * tasks.
+     * 
+     * @param query VenueQuery
+     * @returns Array of VenueResponse
+     */
+    static async findMany(query: VenueQuery): Promise<Array<VenueResponse>> {
+        const data: Array<VenueResponse> = await VenueDAO.findMany(query);
+        // Do logging, validation, and mapping here
+        return data;
+    }
+
+    /**
+     * Returns a detailed response for a single Venue entity. Response object is mapped
+     * to type VenueDetailResponse. Should perform various validation, cleansing, and
+     * security tasks.
+     * 
+     * @param query VenueQuery
+     * @returns VenueDetailResponse
+     */
+    static async findOne(query: VenueQuery): Promise<VenueDetailResponse> {
+        const data: VenueDetailResponse | null = await VenueDAO.findOne(query);
+        if (!data) throw new NonExistentResourceError(
+            `Resource does not exist - show:${JSON.stringify(query.filter)}`
+        );
+        // Do logging, validation, and mapping here
+        return data;
+    }
 }

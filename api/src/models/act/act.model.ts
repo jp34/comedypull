@@ -1,22 +1,7 @@
 import mongoose from "mongoose";
-import { Image, ImageSchema } from "./image.model";
+import { ImageSchema } from "../image";
 
-// -- Act Model - Defines a single comedian
-
-export interface Act {
-    id: string;
-    url: string;
-    name: string;
-    relevance: number;
-    images: Image[];
-    locale: string;
-    version: string;
-    batch: string;
-    createdAt: Date;
-    updatedAt: Date;
-}
-
-const ActSchema = new mongoose.Schema<Act>({
+const ActSchema = new mongoose.Schema({
     id: { type: String, required: true, unique: true },
     url: { type: String, required: true },
     name: { type: String, required: true },
@@ -31,4 +16,4 @@ const ActSchema = new mongoose.Schema<Act>({
     updatedAt: { type: Date }
 }, { timestamps: true });
 
-export const ActModel = mongoose.model<Act>("Act", ActSchema);
+export const ActModel = mongoose.model("Act", ActSchema);
