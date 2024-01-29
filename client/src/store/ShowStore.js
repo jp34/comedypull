@@ -1,7 +1,7 @@
 import { DateTime, Interval } from "luxon";
 import { create } from "zustand";
 import GeoStore from "./GeoStore";
-import axios from "axios";
+import { fetchNearbyShows } from "clients/api.client";
 
 const ageInMinutes = (date) => {
     return Interval.fromDateTimes(
@@ -28,23 +28,16 @@ export const ShowStore = create((set, get) => ({
                 (get().nearby.shows.length < n)             // More data is needed
             );
             if (shouldUpdate) {
-                let params = new URLSearchParams({
-                    latitude: GeoStore.getState().geo.latitude,
-                    longitude: GeoStore.getState().geo.longitude,
-                    size: n
-                });
-                axios.get(`http://20.42.93.82/api/v1/s?${params.toString()}`).then((data) => {
-                    if (data.status == 200) {
-                        console.log(data.data);
-                        set({
-                            nearby: {
-                                date: DateTime.now().toISO(),
-                                shows: data.data
-                            }
-                        });
+                const data = await fetchNearbyShows(
+                    GeoStore.getState().geo.latitude,
+                    GeoStore.getState().geo.longitude,
+                    n
+                );
+                if (data.length > 0) set({
+                    nearby: {
+                        date: DateTime.now().toISO(),
+                        shows: data
                     }
-                }).catch((err) => {
-                    console.log("Unable to fetch nearby shows")
                 });
             }
         }
