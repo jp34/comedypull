@@ -6,6 +6,7 @@ import logger from "./config/logger";
 import express from "express";
 import bodyParser from "body-parser";
 import morgan from "morgan";
+import cors from "cors";
 
 // Log configuration settings
 logger.debug("Server Configuration", { ...Env });
@@ -17,6 +18,7 @@ connect();
 const app = express();
 
 // Add pre-controller middleware
+app.use(cors({ origin: Env.API_CORS_ORIGIN }));
 app.use(bodyParser.json());
 app.use(morgan("combined"));
 
