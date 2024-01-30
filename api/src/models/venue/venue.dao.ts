@@ -1,25 +1,30 @@
 import { VenueModel } from "./venue.model";
-import { VenueQuery } from "./venue.query";
-import { NearbyFilter, buildNearbyFilter } from "../geo";
+import { NearbyQuery, VenueQuery } from "../query";
 import {
     VenueResponse,
     VenueDetailResponse,
     VenueResponseFieldProjection,
     VenueDetailResponseFieldProjection
 } from "./venue.dto";
+import { buildGeoNearStage, buildLimitSkipStages } from "../../helpers/query.helper";
 
 export class VenueDAO {
 
-    static async findMany(query: VenueQuery): Promise<Array<VenueResponse>> {
-        const limit: number = query.size ?? 10;
-        const offset: number = (query.page ?? 0) * limit;
-        const nearbyFilter: NearbyFilter | any = (query.location)
-            ? buildNearbyFilter(query.location.longitude, query.location.latitude)
-            : {};
+    static async findNearby(query: NearbyQuery): Promise<Array<VenueResponse>> {
         return await VenueModel.aggregate([
-            { $match: { ...query.filter, ...nearbyFilter }},
-            { $limit: limit },
-            { $skip: offset },
+            buildGeoNearStage([query.geo.longitude, query.geo.latitude]),
+            ...buildLimitSkipStages(query),
+            { $project: {
+                ...VenueResponseFieldProjection,
+                images: 1
+            }}
+        ]);
+    }
+
+    static async findMany(query: VenueQuery): Promise<Array<VenueResponse>> {
+        return await VenueModel.aggregate([
+            { $match: { ...query.filter }},
+            ...buildLimitSkipStages(query),
             { $project: {
                 ...VenueResponseFieldProjection,
                 images: 1
@@ -31,6 +36,7 @@ export class VenueDAO {
         return (await VenueModel.aggregate([
             { $match: { ...query.filter }},
             { $limit: 1 },
+            { $skip: 0 },
             { $lookup: {
                 from: "shows",
                 localField: "_id",

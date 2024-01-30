@@ -1,5 +1,5 @@
 import { ActModel } from "./act.model";
-import { ActQuery } from "./act.query";
+import { ActQuery } from "../query";
 import {
     ActResponse,
     ActDetailResponse,

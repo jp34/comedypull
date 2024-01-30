@@ -1,4 +1,3 @@
-import logger from "../config/logger";
 import {
     ShowDAO,
     ShowQuery,
@@ -6,12 +5,19 @@ import {
     ShowDetailResponse,
     NonExistentResourceError
 } from "../models";
+import { NearbyQuery } from "../models";
 
 /**
  * Defines various static methods that implement business and CRUD operations
  * related to the Show entity.
  */
 export class ShowService {
+
+    static async findNearby(query: NearbyQuery): Promise<Array<ShowResponse>> {
+        const data: Array<ShowResponse> = await ShowDAO.findNearby(query);
+        // Do logging, validation, and mapping here
+        return data;
+    }
 
     /**
      * Returns an array of Shows matching the provided query. Objects are mapped
@@ -24,7 +30,6 @@ export class ShowService {
     static async findMany(query: ShowQuery): Promise<Array<ShowResponse>> {
         const data: Array<ShowResponse> = await ShowDAO.findMany(query);
         // Do logging, validation, and mapping here
-        logger.debug(data);
         return data;
     }
 
