@@ -3,7 +3,8 @@ import {
     ActController,
     ShowController,
     VenueController,
-    EngineController
+    EngineController,
+    NearbyController
 } from "../controllers";
 
 const ActRouter = Router()
@@ -21,8 +22,13 @@ const VenueRouter = Router()
 const EngineRouter = Router()
     .post("/:command", EngineController.startProcess);
 
+const NearbyRouter = Router()
+    .get("/shows", NearbyController.getNearbyShows)
+    .get("/venues", NearbyController.getNearbyVenues);
+
 export const V1Router = Router()
-    .use("/a", ActRouter)
-    .use("/s", ShowRouter)
-    .use("/v", VenueRouter)
-    .use("/e", EngineRouter);
+    .use("/acts", ActRouter)
+    .use("/shows", ShowRouter)
+    .use("/venues", VenueRouter)
+    .use("/engine", EngineRouter)
+    .use("/nearby", NearbyRouter);

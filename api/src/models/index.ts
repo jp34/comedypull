@@ -3,6 +3,6 @@ export * from "./show";
 export * from "./venue";
 export * from "./geo";
 export * from "./image";
-export * from "./update.model";
+export * from "./query";
 export * from "./tm.model";
 export * from "./error.model";

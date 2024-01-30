@@ -4,6 +4,7 @@ import {
     VenueResponse,
     VenueDetailResponse,
     NonExistentResourceError,
+    NearbyQuery,
 } from "../models";
 
 /**
@@ -11,6 +12,12 @@ import {
  * related to the Venue entity.
  */
 export class VenueService {
+
+    static async findNearby(query: NearbyQuery): Promise<Array<VenueResponse>> {
+        const data: Array<VenueResponse> = await VenueDAO.findNearby(query);
+        // Do logging, validation, and mapping here
+        return data;
+    }
 
     /**
      * Returns an array of Venues matching the provided query. Objects are mapped
