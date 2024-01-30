@@ -1,7 +1,6 @@
 import Env from "../config/env";
 import logger from "../config/logger";
 import {
-    UpdateStatus,
     TMAct,
     TMShow,
     TMVenue,
@@ -106,7 +105,7 @@ type EntryUpdateConfig = {
 };
 
 type EntryUpdateResult = {
-    status: UpdateStatus;
+    status: string;
     attempts: number;
     showCount: number;
     venueCount: number;
@@ -114,7 +113,7 @@ type EntryUpdateResult = {
 
 const updateDatabaseEntry = async (act: IDRef, version: string, config: EntryUpdateConfig): Promise<EntryUpdateResult> => {
     config.currentAttempts++;
-    var result: EntryUpdateResult = { status: UpdateStatus.STARTED, attempts: config.currentAttempts, showCount: 0, venueCount: 0 }
+    var result: EntryUpdateResult = { status: "STARTED", attempts: config.currentAttempts, showCount: 0, venueCount: 0 }
     try {
         // Fetch shows for given entry
         const pairs: Array<[TMShow, TMVenue]> = await fetchShowsByActId(act.id);
@@ -146,17 +145,17 @@ const updateDatabaseEntry = async (act: IDRef, version: string, config: EntryUpd
 
         result.venueCount = (venueResult.result.modifiedCount + venueResult.result.insertedCount);
         result.showCount = (showResult.result.modifiedCount + showResult.result.insertedCount);
-        result.status = UpdateStatus.DONE;
+        result.status = "DONE";
         logger.info(`Inserted data for act:${act.id}`, { act, version });
     } catch (err: any) {
-        result.status = UpdateStatus.FAILED;
+        result.status = "FAILED";
         logger.error(`Failed to insert data for act:${act.id}`, { act, version, cause: err.message, stack: err.stack });
         logger.error(err.stack);
     }
 
     // Check if update failed. If failed try again, otherwise return result
     if (
-        (result.status === UpdateStatus.FAILED) &&
+        (result.status === "FAILED") &&
         (config.currentAttempts < config.maxAttempts)
     )
         return updateDatabaseEntry(act, version, config);
@@ -221,7 +220,7 @@ export const updateDatabase = async (): Promise<void> => {
             });
             
             // Check if process failed
-            if (result.status !== UpdateStatus.DONE)
+            if (result.status !== "DONE")
                 logger.warn(`Failed to insert data for act:${a.id} after ${result.attempts} attempts`);
             // Check if process is done
             if (index == actBatch.length - 1) {
