@@ -8,13 +8,12 @@ import {
 } from "./show.dto";
 import { PipelineStage } from "mongoose";
 import { buildImageProjectionFilter, buildGeoNearStage } from "../../helpers/query.helper";
-import logger from "../../config/logger";
 
 export class ShowDAO {
 
     static async findNearby(query: NearbyQuery): Promise<Array<ShowResponse>> {
         const pipeline: Array<PipelineStage> = [
-            buildGeoNearStage([query.geo.longitude, query.geo.latitude]),
+            buildGeoNearStage([query.geo.longitude, query.geo.latitude], {}),
             ...ShowDAO.buildShowPipeline(query, ShowResponseFieldProjection)
         ];
         return await ShowModel.aggregate(pipeline);
@@ -39,9 +38,9 @@ export class ShowDAO {
     private static buildShowPipeline(query: Query, projection: any): Array<PipelineStage> {
         const limit: number = query.size ?? 10;
         const offset: number = (query.page) ? (query.page * limit) : 0;
-        logger.debug(limit);
-        logger.debug(offset);
         return [
+            { $match: { "date": { $gte: new Date(Date.now()) }}},
+            { $sort: { date: 1 }},
             { $limit: limit },
             { $skip: offset },
             { $lookup: {

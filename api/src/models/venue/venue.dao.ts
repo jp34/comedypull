@@ -12,7 +12,7 @@ export class VenueDAO {
 
     static async findNearby(query: NearbyQuery): Promise<Array<VenueResponse>> {
         return await VenueModel.aggregate([
-            buildGeoNearStage([query.geo.longitude, query.geo.latitude]),
+            buildGeoNearStage([query.geo.longitude, query.geo.latitude], {}),
             ...buildLimitSkipStages(query),
             { $project: {
                 ...VenueResponseFieldProjection,

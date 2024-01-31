@@ -8,13 +8,14 @@ export const buildLimitSkipStages = (query: Query): Array<PipelineStage> => {
     return [{ $limit: limit }, { $skip: offset }];
 }
 
-export const buildGeoNearStage = (geo: [number, number]): PipelineStage => {
+export const buildGeoNearStage = (geo: [number, number], query: any): PipelineStage => {
     return {
         $geoNear: {
             near: { type: "Point", coordinates: geo },
             distanceField: "dist",
             maxDistance: (Env.API_NEARBY_LIMIT * 1609.34),  // Convert miles to meters
-            spherical: true
+            spherical: true,
+            query: query
         }
     }
 }
