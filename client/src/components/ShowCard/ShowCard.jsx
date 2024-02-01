@@ -11,24 +11,27 @@ export const ShowCard = ({ show }) => {
     const dateFormatted = `${date[0].value} ${date[2].value} - ${date[6].value}:${date[8].value} ${date[10].value.toLocaleLowerCase(show.locale)}`;
 
     // Select image to display
-    const image = show.images.filter((i) => {
-        let split = i.url.split(/_/);
-        if (split[1] !== "RETINA") return false;
-        if (split[2] !== "PORTRAIT") return false;
-        return true;
-    })[0];
+    const image = show.images[0];
 
     const [iconColor, setIconColor] = useState("#000000")
 
     const handleClick = () => {
         console.log(`show:${show.id}`);
     }
+
+    const renderImage = () => {
+        if (!image) {
+            return <h1>Image not available</h1>
+        } else {
+            return <img src={image.url} alt={show.act.name} />
+        }
+    }
     
     return (
         <Link className="show-link" to="/">
             <div className="show-card">
                 <div className="show-image">
-                    <img src={image.url} alt={show.act.name} />
+                    {renderImage()}
                 </div>
                 <div className="show-details">
                     <div className="first">
