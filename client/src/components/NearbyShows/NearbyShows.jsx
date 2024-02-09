@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { ShowCard, ShowGallery } from "components";
+import { ShowCard, ShowCategory } from "components";
 import { ShowStore } from "../../store/ShowStore";
 import "./NearbyShows.css";
 
@@ -8,11 +8,11 @@ export const NearbyShows = () => {
     const shows = ShowStore((state) => state.nearby.shows);
 
     useEffect(() => {
-        ShowStore.getState().actions.fetchNearby(4);
+        ShowStore.getState().actions.fetchNearby(8);
     }, [shows]);
 
     return (
-        <ShowGallery title="Shows near you">
+        <ShowCategory title="Shows near you">
             {shows.map((s) => {
                 return (
                     <ShowCard
@@ -21,6 +21,6 @@ export const NearbyShows = () => {
                     />
                 );
             })}
-        </ShowGallery>
+        </ShowCategory>
     );
 }

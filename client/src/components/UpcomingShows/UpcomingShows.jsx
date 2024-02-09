@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { ShowCard, ShowGallery } from "components";
+import { ShowCard, ShowCategory } from "components";
 import { ShowStore } from "store";
 import "./UpcomingShows.css";
 
@@ -8,11 +8,11 @@ export const UpcomingShows = () => {
     const shows = ShowStore((state) => state.upcoming.shows);
 
     useEffect(() => {
-        ShowStore.getState().actions.fetchUpcoming(4);
+        ShowStore.getState().actions.fetchUpcoming(8);
     }, [shows]);
 
     return (
-        <ShowGallery title="Upcoming Shows">
+        <ShowCategory title="Upcoming Shows">
             {shows.map((s) => {
                 return (
                     <ShowCard
@@ -21,6 +21,6 @@ export const UpcomingShows = () => {
                     />
                 );
             })}
-        </ShowGallery>
+        </ShowCategory>
     );
 }

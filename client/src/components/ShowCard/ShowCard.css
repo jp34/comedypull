@@ -1,56 +1,51 @@
 
-.show-link {
-    text-decoration: none;
-}
-
 .show-card {
     display: flex;
     flex-direction: column;
-    border: 1px solid #d1d1d1;
-    border-radius: 6px;
     width: 280px;
-    height: 380px;
+    height: 320px;
+    border-radius: 4px;
+    box-shadow: -2px 2px 4px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--main-border-primary);
+    background: var(--main-bg-primary);
 }
 
+/* Image */
+
 .show-image {
-    flex: 3;
     display: flex;
     overflow: hidden;
     justify-content: center;
     align-items: center;
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
+    min-height: 197px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
 }
 
 .show-image > img {
     height: 100%;
+    aspect-ratio: auto;
 }
 
+/* ShowCard Details */
+
 .show-details {
-    flex: 1;
-    padding: 1em;
-    border-top: 1px solid #d1d1d1;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background-color: #fff;
+    max-width: 280px;
+    max-height: 122px;
+    padding: 1em;
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
 }
 
-.show-details > .first {
+.show-head {
     display: flex;
     flex-direction: row;
 }
 
-.show-details > .second {
-    padding: 1em 0 1em 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-}
-
-.show-date {
+.show-date-container {
     display: flex;
     flex: 2;
     flex-direction: row;
@@ -58,13 +53,15 @@
     gap: 0.5em;
 }
 
-.show-date-str {
+.show-date {
     margin: 0;
     font-family: 'Poppins', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    color: #1c1c1c;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--main-text-primary);
 }
+
+/* ShowCard Bookmark */
 
 .show-bookmark {
     display: flex;
@@ -82,18 +79,28 @@
     cursor: pointer;
 }
 
+/* ShowCard body */
+
+.show-body {
+    padding: 1em 0 0 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 4px;
+}
+
 .show-act {
     margin: 0;
     font-family: 'Poppins', sans-serif;
-    font-size: 15px;
-    font-weight: 800;
-    color: #1c1c1c;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--main-highlight);
 }
 
 .show-venue {
     margin: 0;
     font-family: 'Poppins', sans-serif;
-    font-size: 12px;
-    font-weight: 400;
-    color: #6c6c6c;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--main-text-secondary);
 }

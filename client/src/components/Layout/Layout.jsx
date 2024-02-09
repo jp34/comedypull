@@ -6,7 +6,7 @@ export const Layout = () => {
     return (
         <div className="layout">
             <Header />
-            <div className="content">
+            <div className="page">
                 <Outlet />
             </div>
             <Footer />

@@ -1,14 +1,37 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Nosifer&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;800&display=swap');
+
+:root {
+    --main-highlight: #c776e3;
+    --main-bg-primary: #101415;
+    --main-bg-secondary: #2c3133;
+    --main-border-primary: #212021;
+
+    --main-text-primary: #eff4fc;
+    --main-text-secondary: #aaacb8;
+    --main-text-button: #1d203b;
+    --main-icon-primary: #86878e;
+
+    --header-bg-primary: #101415;
+    --header-border-primary: #212021;
+    --header-text-primary: #86878e;
+    --header-text-button: #1d203b;
+    --header-icon-primary: #86878e;
+
+    --hero-border-primary: #212021;
+    --hero-text-primary: #eff4fc;
+    --hero-text-secondary: #aaacb8;
+    --hero-text-button: #1d203b;
+}
 
 html, body {
     margin: 0;
     width: 100vw;
     height: 100vh;
-    background-color: #ececec;
+    background-color: var(--main-bg-primary);
 }
 
 .app {

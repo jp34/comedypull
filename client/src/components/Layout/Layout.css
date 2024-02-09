@@ -5,8 +5,6 @@
     min-height: 100vh;
 }
 
-.content {
-    display: flex;
+.page {
     flex: 1;
-    justify-content: center;
 }
