@@ -1,5 +1,3 @@
-// Import env first to ensure valid configuration
-import Env from 'config/env.config';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';

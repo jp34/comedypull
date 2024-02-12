@@ -1,5 +1,4 @@
 import axios from "axios";
-import Env from "./env.config";
 import {
     BadRequestError,
     NotFoundError,
@@ -8,7 +7,7 @@ import {
 } from "models";
 
 const client = axios.create({
-    baseURL: `http://${Env.API_HOST}:${Env.API_PORT}${Env.API_BASE_URL}`,
+    baseURL: `http://20.42.93.82/api/v1`,
     timeout: 2500
 });
 
