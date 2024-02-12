@@ -7,7 +7,7 @@ import {
 } from "models";
 
 const client = axios.create({
-    baseURL: `http://20.42.93.82/api/v1`,
+    baseURL: `https://comedypull.io/api/v1`,
     timeout: 2500
 });
 
