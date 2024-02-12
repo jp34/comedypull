@@ -1,0 +1,9 @@
+
+footer {
+    position: relative;
+    bottom: 0;
+    min-height: 60px;
+    width: 100%;
+    background: var(--main-bg-primary);
+    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.5);
+}

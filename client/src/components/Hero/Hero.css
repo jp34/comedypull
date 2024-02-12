@@ -1,0 +1,90 @@
+
+.hero {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    height: calc(32em - 48px);
+    z-index: 5;
+    background: var(--main-highlight);
+    border-bottom: 1px solid var(--hero-border-primary);
+    box-shadow: 0 4px 10px rgb(0, 0, 0, 0.5);
+}
+
+/* Content */
+
+.hero-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    transform: translateY(-8px);
+    max-width: 50%;
+    padding: 2em 8em 2em 8em;
+    gap: 32px;
+}
+
+.hero-message {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.hero-message > h1 {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    font-size: 42px;
+    font-weight: bold;
+    color: var(--hero-text-button);
+}
+
+.hero-message > p {
+    margin: 0;
+    max-width: 35em;
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--hero-text-button);
+}
+
+#hero-register-button {
+    width: 130px;
+    height: 40px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    border-radius: 2px;
+    background-color: var(--main-bg-primary);
+    color: var(--main-highlight);
+}
+
+/* Animation */
+
+.hero-animation {
+    display: flex;
+    flex-direction: row;
+    flex: 1.5;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.hero-animation-col {
+    padding: 16px;
+}
+
+.hero-animation-col:nth-child(2) {
+    transform: translateY(-108px);
+}
+
+.hero-animation-image {
+    display: flex;
+    margin-bottom: 16px;
+    box-shadow: -2px 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.hero-animation-image > img {
+    height: 100%;
+    aspect-ratio: auto;
+    border-radius: 4px;
+}

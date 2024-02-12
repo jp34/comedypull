@@ -1,0 +1,106 @@
+
+.show-card {
+    display: flex;
+    flex-direction: column;
+    width: 280px;
+    height: 320px;
+    border-radius: 4px;
+    box-shadow: -2px 2px 4px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--main-border-primary);
+    background: var(--main-bg-primary);
+}
+
+/* Image */
+
+.show-image {
+    display: flex;
+    overflow: hidden;
+    justify-content: center;
+    align-items: center;
+    min-height: 197px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.show-image > img {
+    height: 100%;
+    aspect-ratio: auto;
+}
+
+/* ShowCard Details */
+
+.show-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    max-width: 280px;
+    max-height: 122px;
+    padding: 1em;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+.show-head {
+    display: flex;
+    flex-direction: row;
+}
+
+.show-date-container {
+    display: flex;
+    flex: 2;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.show-date {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--main-text-primary);
+}
+
+/* ShowCard Bookmark */
+
+.show-bookmark {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.show-bookmark-button {
+    border: transparent;
+    background-color: transparent;
+}
+
+.show-bookmark:hover {
+    cursor: pointer;
+}
+
+/* ShowCard body */
+
+.show-body {
+    padding: 1em 0 0 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 4px;
+}
+
+.show-act {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--main-highlight);
+}
+
+.show-venue {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--main-text-secondary);
+}
