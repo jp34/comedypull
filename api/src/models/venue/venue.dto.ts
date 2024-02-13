@@ -8,6 +8,7 @@ export type VenueResponse = {
     url: string;
     name: string;
     location: LocationResponse;
+    address: AddressResponse;
     locale: string;
     images: Array<ImageResponse>;
 }
@@ -30,6 +31,7 @@ export const VenueResponseFieldProjection = {
     url: 1,
     name: 1,
     location: 1,
+    address: 1,
     locale: 1
 };
 

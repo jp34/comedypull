@@ -11,8 +11,7 @@ export const Hero = () => {
                         <span>and never miss a show.</span>
                     </h1>
                     <p>
-                        Cras felis ante, pellentesque et dui eget, porttitor commodo dolor. Sed consectetur
-                        turpis eget ligula auctor rhoncus. Integer dictum velit non leo auctor porttitor.
+                        Discover new comedians, find local venues, and receive notifications about upcoming shows, ticket sales, and curated recommendations.
                     </p>    
                 </div>
                 <button id="hero-register-button">Get Started</button>
@@ -31,7 +30,7 @@ export const Hero = () => {
                 </div>
                 <div className="hero-animation-col">
                     <div className="hero-animation-image">
-                        <img src="https://s1.ticketm.net/dam/a/695/2b6e7653-dec2-4b4f-a858-cbf40f26c695_ARTIST_PAGE_3_2.jpg" alt="Charlie Berens" />
+                        <img src="https://s1.ticketm.net/dam/a/b20/a8f3948b-f433-4090-b048-df31e7d03b20_ARTIST_PAGE_3_2.jpg" alt="Nate Bargatze" />
                     </div>
                     <div className="hero-animation-image">
                         <img src="https://s1.ticketm.net/dam/a/409/532be76a-a643-408a-b031-b577b60a8409_ARTIST_PAGE_3_2.jpg" alt="Kevin Hart"/>
