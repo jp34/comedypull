@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-const GeoStore = create((set, get) => ({
+export const GeoStore = create((set, get) => ({
     geo: {
         latitude: -1,
         longitude: -1
@@ -17,5 +17,3 @@ const GeoStore = create((set, get) => ({
         }
     }
 }));
-
-export default GeoStore;

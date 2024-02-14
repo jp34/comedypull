@@ -1,6 +1,6 @@
 import { DateTime, Interval } from "luxon";
 import { create } from "zustand";
-import GeoStore from "./GeoStore";
+import { GeoStore } from "./GeoStore";
 import { fetchNearbyVenues } from "clients/api.client";
 
 const ageInMinutes = (date) => {

@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useGeolocated } from "react-geolocated";
 import { Layout } from "components";
 import { Home } from "pages";
-import GeoStore from "./store/GeoStore";
+import { GeoStore } from "./store/GeoStore";
 import "./App.css";
 
 const App = () => {
@@ -24,12 +24,6 @@ const App = () => {
     } else if (!isGeolocationEnabled) {
         console.log("Geolocation is not enabled");
     }
-
-    if (!GeoStore.getState().actions.ready()) return (
-        <>
-        <h1>Loading</h1>
-        </>
-    )
 
 	return (
 		<div className="app">
