@@ -1,4 +1,10 @@
-import { Hero, Gallery, NearbyShows, UpcomingShows, RegisterBanner } from "components";
+import {
+    Hero,
+    Gallery,
+    RegisterBanner,
+    NearbyShows,
+    UpcomingShows
+} from "components";
 import "./Home.css";
 
 export const Home = () => {
@@ -6,9 +12,9 @@ export const Home = () => {
         <>
             <Hero />
             <Gallery>
-                <NearbyShows />
-                <RegisterBanner />
                 <UpcomingShows />
+                <RegisterBanner />
+                <NearbyShows />
             </Gallery>
         </>
     );

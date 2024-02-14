@@ -8,3 +8,5 @@ export * from "./Hero/Hero";
 export * from "./NearbyShows/NearbyShows";
 export * from "./UpcomingShows/UpcomingShows";
 export * from "./RegisterBanner/RegisterBanner";
+export * from "./VenueCard/VenueCard";
+export * from "./NearbyVenues/NearbyVenues";
