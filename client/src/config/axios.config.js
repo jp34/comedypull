@@ -1,4 +1,5 @@
 import axios from "axios";
+import { API_URL } from "./env.config";
 import {
     BadRequestError,
     NotFoundError,
@@ -7,7 +8,7 @@ import {
 } from "models";
 
 const client = axios.create({
-    baseURL: `https://comedypull.io/api/v1`,
+    baseURL: API_URL,
     timeout: 2500
 });
 
