@@ -1,7 +1,7 @@
 import "./config/env.config";
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
+import App from './ui/App';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

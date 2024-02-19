@@ -5,7 +5,7 @@ import {
     NotFoundError,
     TooManyRequestsError,
     UnauthorizedError
-} from "models";
+} from "models/error.model";
 
 const client = axios.create({
     baseURL: API_URL,

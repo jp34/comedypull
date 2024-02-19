@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { ShowCard, ShowCategory } from "components";
+import { ShowCard, ShowCategory } from "ui/components";
 import { ShowStore } from "store";
 import "./UpcomingShows.css";
 

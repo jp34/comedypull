@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { ShowCard, ShowCategory } from "components";
-import { ShowStore } from "../../store/ShowStore";
+import { ShowCard, ShowCategory } from "ui/components";
+import { ShowStore } from "store";
 import "./NearbyShows.css";
 
 export const NearbyShows = () => {

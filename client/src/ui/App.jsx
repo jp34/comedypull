@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useGeolocated } from "react-geolocated";
-import { Layout } from "components";
-import { Home } from "pages";
-import { GeoStore } from "./store/GeoStore";
-import "./App.css";
+import { Layout } from "./components";
+import { Home } from "./pages";
+import { GeoStore } from "../store/GeoStore";
+import "./App.scss";
 
 const App = () => {
     

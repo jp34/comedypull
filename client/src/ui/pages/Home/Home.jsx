@@ -4,9 +4,9 @@ import {
     RegisterBanner,
     NearbyShows,
     UpcomingShows
-} from "components";
+} from "ui/components";
 import { GeoStore } from "store";
-import "./Home.css";
+import "./Home.scss";
 
 export const Home = () => {
 

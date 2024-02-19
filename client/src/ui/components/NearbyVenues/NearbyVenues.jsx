@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { VenueCard, ShowCategory } from "components";
-import { VenueStore } from "../../store";
+import { VenueCard, ShowCategory } from "ui/components";
+import { VenueStore } from "store";
 import "./NearbyVenues.css";
 
 export const NearbyVenues = () => {

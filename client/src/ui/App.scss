@@ -5,6 +5,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;800&display=swap');
 
 :root {
+    
     --main-highlight: #c776e3;
     --main-bg-primary: #101415;
     --main-bg-secondary: #2c3133;
@@ -25,15 +26,15 @@
     --hero-text-primary: #eff4fc;
     --hero-text-secondary: #aaacb8;
     --hero-text-button: #1d203b;
-}
 
-html, body {
-    margin: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: var(--main-bg-primary);
-}
-
-.app {
-    margin: 0;
+    html, body {
+        margin: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: var(--main-bg-primary);
+    
+        .app {
+            margin: 0;
+        }
+    }
 }
